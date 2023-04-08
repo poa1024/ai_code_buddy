@@ -1,0 +1,24 @@
+<idea-plugin>
+    <id>io.github.poa1024.chatgpt_intellij_plugin</id>
+    <name>Chat GPT</name>
+    <vendor email="poa1024@gmail.com"/>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij"/>
+
+    <actions>
+        <group id="poa1024.chatGpt"
+               text="Chat GPT"
+               popup="true"
+               description="Ask Chat GPT">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <action
+                    id="poa1024.chatGpt.explainInDetails"
+                    class="io.github.poa1024.action.ExplainInDetailsAction"
+                    text="Explain in Details"
+                    description="Explain in details">
+            </action>
+        </group>
+    </actions>
+</idea-plugin>
