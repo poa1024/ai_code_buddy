@@ -3,6 +3,7 @@
 - code generation
   - generated code can (should?) have explanatory comments?
   - dialog for method creation (having session or history to be able to continue changing the method)
+  - should work in the json/sql files, in the db console (maybe already work, need to check)
 - readme.me generation
 - providing the whole project as a context for code explanation actions
 - checking the code, suggesting improvements
