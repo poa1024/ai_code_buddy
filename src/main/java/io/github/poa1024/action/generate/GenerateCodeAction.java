@@ -6,10 +6,10 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Editor;
-import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiFile;
+import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import io.github.poa1024.Configuration;
+import io.github.poa1024.GptException;
 import io.github.poa1024.gpt.GptClient;
 import io.github.poa1024.gpt.GptQuestionBuilder;
 import lombok.Getter;
@@ -32,7 +32,7 @@ public class GenerateCodeAction extends AnAction {
         var psiFile = e.getData(LangDataKeys.PSI_FILE);
         var caretModel = editor.getCaretModel();
 
-        var selectedText = getSelectedText(editor, psiFile);
+        var selectedText = getSelectedTextOrTheCurrentComment(editor, psiFile);
 
         var res = gptClient
                 .ask(gptQuestionBuilder.askToGenerateCode(selectedText.getText()))
@@ -51,7 +51,7 @@ public class GenerateCodeAction extends AnAction {
         caretModel.getCurrentCaret().removeSelection();
     }
 
-    private static SelectedText getSelectedText(Editor editor, PsiFile psiFile) {
+    private static SelectedText getSelectedTextOrTheCurrentComment(Editor editor, PsiFile psiFile) {
 
         var caretModel = editor.getCaretModel();
         var currentCaret = caretModel.getCurrentCaret();
@@ -65,6 +65,15 @@ public class GenerateCodeAction extends AnAction {
         }
 
         var currentNode = psiFile.getNode().findLeafElementAt(caretModel.getOffset());
+
+        while (currentNode instanceof PsiWhiteSpace && !(currentNode instanceof PsiComment)) {
+            currentNode = currentNode.getTreePrev();
+        }
+
+        if (!(currentNode instanceof PsiComment)) {
+            throw new GptException("Didn't found a suitable place for the code insertion");
+        }
+
         return new SelectedText(
                 currentNode.getText(),
                 currentNode.getTextRange().getStartOffset(),
