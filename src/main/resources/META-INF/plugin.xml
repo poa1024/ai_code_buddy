@@ -14,6 +14,12 @@
                description="Ask Chat GPT">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <action
+                    id="poa1024.chatGpt.explain"
+                    class="io.github.poa1024.action.ExplainTheGistAction"
+                    text="Explain the Gist"
+                    description="Explain the gist">
+            </action>
+            <action
                     id="poa1024.chatGpt.explainInDetails"
                     class="io.github.poa1024.action.ExplainInDetailsAction"
                     text="Explain in Details"
