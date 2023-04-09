@@ -8,3 +8,5 @@
   - dialog for method creation (having session or history to be able to continue changing the method)
 - readme.me generation
 - providing the whole project as a context for code explanation actions
+- checking the code, suggesting improvements
+- refactoring existing code (with a dialog?)
