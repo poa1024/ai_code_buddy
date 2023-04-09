@@ -6,7 +6,10 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Editor;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiComment;
+import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import io.github.poa1024.Configuration;
 import io.github.poa1024.GptException;
@@ -34,8 +37,10 @@ public class GenerateCodeAction extends AnAction {
 
         var selectedText = getSelectedTextOrTheCurrentComment(editor, psiFile);
 
+        var fileText = psiFile.getText();
+
         var res = gptClient
-                .ask(gptQuestionBuilder.askToGenerateCode(selectedText.getText()))
+                .ask(gptQuestionBuilder.askToGenerateCode(selectedText.getText(), fileText))
                 .getFirstChoice();
 
         WriteCommandAction.runWriteCommandAction(

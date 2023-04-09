@@ -32,8 +32,8 @@
         <action
                 id="poa1024.chatGpt.generateCode"
                 class="io.github.poa1024.action.generate.GenerateCodeAction"
-                text="GPT. Create Code Based on Description"
-                description="GPT. Create code based on description">
+                text="GPT. Create Code Based on the Description"
+                description="GPT. Create code based on the description">
             <add-to-group group-id="GenerateGroup" anchor="last"/>
         </action>
 
