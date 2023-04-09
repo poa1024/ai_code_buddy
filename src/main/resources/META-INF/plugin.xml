@@ -8,6 +8,7 @@
     <extensions defaultExtensionNs="com.intellij"/>
 
     <actions>
+
         <group id="poa1024.chatGpt"
                text="Chat GPT"
                popup="true"
@@ -15,16 +16,26 @@
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <action
                     id="poa1024.chatGpt.explain"
-                    class="io.github.poa1024.action.ExplainTheGistAction"
+                    class="io.github.poa1024.action.explain.ExplainTheGistAction"
                     text="Explain the Gist"
                     description="Explain the gist">
             </action>
             <action
                     id="poa1024.chatGpt.explainInDetails"
-                    class="io.github.poa1024.action.ExplainInDetailsAction"
+                    class="io.github.poa1024.action.explain.ExplainInDetailsAction"
                     text="Explain in Details"
                     description="Explain in details">
             </action>
         </group>
+
+
+        <action
+                id="poa1024.chatGpt.generateCode"
+                class="io.github.poa1024.action.generate.GenerateCodeAction"
+                text="GPT. Create Code Based on Description"
+                description="GPT. Create code based on description">
+            <add-to-group group-id="GenerateGroup" anchor="last"/>
+        </action>
+
     </actions>
 </idea-plugin>

@@ -1,4 +1,4 @@
-package io.github.poa1024.action;
+package io.github.poa1024.action.explain;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -12,7 +12,7 @@ import io.github.poa1024.gpt.GptClient;
 import io.github.poa1024.gpt.GptQuestionBuilder;
 import org.jetbrains.annotations.NotNull;
 
-public class ExplainInDetailsAction extends AnAction {
+public class ExplainTheGistAction extends AnAction {
 
     private final GptClient gptClient = Configuration.GPT_CLIENT;
     private final GptQuestionBuilder gptQuestionBuilder = Configuration.GPT_QUESTION_BUILDER;
@@ -31,18 +31,18 @@ public class ExplainInDetailsAction extends AnAction {
         var selectedText = caretModel.getCurrentCaret().getSelectedText();
 
         var res = gptClient
-                .ask(gptQuestionBuilder.askForDetailedExplanation(selectedText))
+                .ask(gptQuestionBuilder.askForShortExplanation(selectedText))
                 .getFirstChoice();
 
         int selectionStart = caretModel.getCurrentCaret().getSelectionStart();
-        int selectionEnd = caretModel.getCurrentCaret().getSelectionEnd();
+        int explanationStart = selectionStart - 1;
 
         WriteCommandAction.runWriteCommandAction(
                 project,
                 () -> {
-                    document.replaceString(selectionStart, selectionEnd, res);
+                    document.insertString(explanationStart, res);
                     documentManager.commitDocument(document);
-                    styleManager.reformatText(psiFile, selectionStart, selectionStart + res.length());
+                    styleManager.reformatText(psiFile, explanationStart, explanationStart + res.length());
                 }
 
 

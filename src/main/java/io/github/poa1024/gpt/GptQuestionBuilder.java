@@ -4,7 +4,7 @@ public class GptQuestionBuilder {
 
     public String askForDetailedExplanation(String code) {
         return "Explain the code. Do not change the code, just add explanatory comments. " +
-                "Your response should contains this code with your explanatory comments. " +
+                "Your response should contain this code with your explanatory comments. " +
                 "Code starts here: " + code;
     }
 
@@ -17,6 +17,12 @@ public class GptQuestionBuilder {
                 "Your answer should not contain the code itself. Just the explanation." +
                 "Every new sentence should start with a new line." +
                 "Code starts here: " + code;
+    }
+
+    public String askToGenerateCode(String request) {
+        return "Generate code based on provided request. " +
+                "Your response should contain code only. " +
+                "Request starts here: " + request;
     }
 
 }
