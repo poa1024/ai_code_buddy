@@ -6,7 +6,7 @@
   - should work in the json/sql files, in the db console (maybe already work, need to check)
 - readme.me generation
 - providing the whole project as a context for code explanation actions
-- checking the code, suggesting improvements
+- checking the code, suggesting improvements, checking for bugs
 - refactoring existing code (with a dialog?)
 - progress bar (request to openai)
 - continuous text/code generation (???) 
