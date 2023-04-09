@@ -13,6 +13,9 @@ import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import io.github.poa1024.Configuration;
 import io.github.poa1024.GptException;
+import io.github.poa1024.conversation.GptConversationManager;
+import io.github.poa1024.conversation.model.Answer;
+import io.github.poa1024.conversation.model.Question;
 import io.github.poa1024.gpt.GptClient;
 import io.github.poa1024.gpt.GptQuestionBuilder;
 import lombok.Getter;
@@ -23,6 +26,7 @@ public class GenerateCodeAction extends AnAction {
 
     private final GptClient gptClient = Configuration.GPT_CLIENT;
     private final GptQuestionBuilder gptQuestionBuilder = Configuration.GPT_QUESTION_BUILDER;
+    private final GptConversationManager conversationManager = Configuration.CONVERSATION_MANAGER;
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
@@ -37,11 +41,16 @@ public class GenerateCodeAction extends AnAction {
 
         var selectedText = getSelectedTextOrTheCurrentComment(editor, psiFile);
 
+        conversationManager.startConversation(new Question(selectedText.getText()));
+
         var fileText = psiFile.getText();
 
         var res = gptClient
                 .ask(gptQuestionBuilder.askToGenerateCode(selectedText.getText(), fileText))
                 .getFirstChoice();
+
+        conversationManager.getGptConversation().addAnswer(new Answer(res, "code was generated successfully"));
+        conversationManager.updateView();
 
         WriteCommandAction.runWriteCommandAction(
                 project,

@@ -9,16 +9,18 @@
     </properties>
     <border type="none"/>
     <children>
-      <component id="fa9e2" class="javax.swing.JTextArea" binding="history">
+      <component id="27b12" class="javax.swing.JTextPane" binding="history">
         <constraints border-constraint="Center"/>
         <properties>
+          <contentType value="text/html"/>
           <editable value="false"/>
+          <text value="&lt;html&gt;&#10;  &lt;head&gt;&#10;&#10;  &lt;/head&gt;&#10;  &lt;body&gt;&#10;    &#10;  &lt;/body&gt;&#10;&lt;/html&gt;&#10;"/>
         </properties>
       </component>
       <component id="a31a8" class="javax.swing.JTextField" binding="terminal">
         <constraints border-constraint="Last"/>
         <properties>
-          <margin top="3" left="6" bottom="2" right="6"/>
+          <margin top="2" left="6" bottom="2" right="6"/>
           <opaque value="false"/>
         </properties>
       </component>
