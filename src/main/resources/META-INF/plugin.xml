@@ -6,7 +6,7 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="io.github.poa1024.ui.GptConversationWindowFactory" id="GPT" anchor="bottom"/>
+        <toolWindow factoryClass="io.github.poa1024.ui.GptCodeGenerationSessionWindowFactory" id="GPT" anchor="bottom"/>
     </extensions>
 
     <actions>

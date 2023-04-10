@@ -1,4 +1,4 @@
-package io.github.poa1024.conversation.model;
+package io.github.poa1024.sesssion.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

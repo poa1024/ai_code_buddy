@@ -1,9 +1,7 @@
 ## The plan
 
 - code generation
-  - generated code can (should?) have explanatory comments?
-  - dialog for method creation (having session or history to be able to continue changing the method)
-  - should work in the json/sql files, in the db console (maybe already work, need to check)
+    - should work in the json/sql files, in the db console (maybe already work, need to check)
 - readme.me generation
 - providing the whole project as a context for code explanation actions
 - checking the code, suggesting improvements, checking for bugs
@@ -17,3 +15,6 @@
 - clean comments chars?
 - hotkeys
 - use additional threads for http calls?
+- validate response and retry if needed
+- if something goes wrong with the psi manipulation, just recreate the document from scratch
+- refactor the class structure
