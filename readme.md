@@ -18,3 +18,4 @@
 - validate response and retry if needed
 - if something goes wrong with the psi manipulation, just recreate the document from scratch
 - refactor the class structure
+- configuration for apikey
