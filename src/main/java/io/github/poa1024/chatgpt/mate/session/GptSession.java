@@ -1,16 +1,12 @@
 package io.github.poa1024.chatgpt.mate.session;
 
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.util.Pair;
-import com.intellij.psi.PsiFile;
 import io.github.poa1024.chatgpt.mate.Configuration;
+import io.github.poa1024.chatgpt.mate.Executor;
 import io.github.poa1024.chatgpt.mate.GptClient;
 import io.github.poa1024.chatgpt.mate.session.model.GptInteraction;
 import io.github.poa1024.chatgpt.mate.session.model.GptRequest;
 import io.github.poa1024.chatgpt.mate.session.model.GptResponse;
-import org.jetbrains.annotations.NotNull;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +14,14 @@ import java.util.List;
 public abstract class GptSession {
 
     private final GptClient gptClient = Configuration.GPT_CLIENT;
-    private final ProgressManager progressManager = ProgressManager.getInstance();
 
-    protected final PsiFile psiFile;
+    protected final Executor executor;
     protected final String initialContext;
 
     protected final List<GptInteraction> history = new ArrayList<>();
 
-    protected GptSession(PsiFile psiFile, String initialContext) {
-        this.psiFile = psiFile;
+    protected GptSession(Executor executor, String initialContext) {
+        this.executor = executor;
         this.initialContext = initialContext;
     }
 
@@ -34,18 +29,15 @@ public abstract class GptSession {
         var req = createRequest(userInput);
         history.add(new GptInteraction(req));
         onAnyChangesCallback.run();
-        progressManager.run(new Task.Backgroundable(psiFile.getProject(), "GPT request...") {
-            @Override
-            public void run(@NotNull ProgressIndicator indicator) {
-                synchronized (GptSession.class) {
-                    var firstChoice = gptClient
-                            .ask(req.getBody())
-                            .getFirstChoice();
-                    var res = new GptResponse(firstChoice);
-                    handleResponse(res);
-                    getLastInteraction().setGptResponse(res);
-                    onAnyChangesCallback.run();
-                }
+        executor.execute("GPT request...", () -> {
+            synchronized (GptSession.class) {
+                var firstChoice = gptClient
+                        .ask(req.getBody())
+                        .getFirstChoice();
+                var res = new GptResponse(firstChoice);
+                handleResponse(res);
+                getLastInteraction().setGptResponse(res);
+                onAnyChangesCallback.run();
             }
         });
     }

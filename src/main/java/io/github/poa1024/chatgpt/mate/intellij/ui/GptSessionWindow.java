@@ -1,8 +1,8 @@
 package io.github.poa1024.chatgpt.mate.intellij.ui;
 
-import com.intellij.openapi.util.Pair;
 import io.github.poa1024.chatgpt.mate.util.TextUtils;
 import lombok.Getter;
+import org.apache.commons.lang3.tuple.Pair;
 import org.intellij.lang.annotations.Language;
 
 import javax.swing.*;
@@ -45,10 +45,10 @@ public class GptSessionWindow {
         var conversationAsString = conversation.stream()
                 .map(qa -> {
                             var list = new ArrayList<String>();
-                    list.add("<b>Q:</b>&ensp;" + TextUtils.toHtml(qa.first));
-                    list.add("<br>");
-                            if (qa.second != null) {
-                                list.add("<b>A:</b>&ensp;" + TextUtils.toHtml(qa.second));
+                            list.add("<b>Q:</b>&ensp;" + TextUtils.toHtml(qa.getLeft()));
+                            list.add("<br>");
+                            if (qa.getRight() != null) {
+                                list.add("<b>A:</b>&ensp;" + TextUtils.toHtml(qa.getRight()));
                                 list.add("<br>");
                             }
                             list.add("<br>");

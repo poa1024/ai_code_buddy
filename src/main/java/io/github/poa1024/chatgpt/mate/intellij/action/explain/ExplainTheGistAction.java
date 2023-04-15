@@ -5,10 +5,12 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import io.github.poa1024.chatgpt.mate.Configuration;
+import io.github.poa1024.chatgpt.mate.intellij.BackgroundableExecutor;
 import io.github.poa1024.chatgpt.mate.session.GptExplainTheGistSession;
 import io.github.poa1024.chatgpt.mate.session.GptSessionManager;
 import io.github.poa1024.chatgpt.mate.util.NotificationUtils;
 import io.github.poa1024.chatgpt.mate.util.PsiUtils;
+import io.github.poa1024.chatgpt.mate.util.TextUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class ExplainTheGistAction extends AnAction {
@@ -30,8 +32,13 @@ public class ExplainTheGistAction extends AnAction {
             return;
         }
 
-        gptSessionManager.openNewSession(project, new GptExplainTheGistSession(psiFile, selectedText.getText()));
+        var code = selectedText.getText();
+        var context = TextUtils.removeCodeFromTheContext(psiFile.getText(), code);
+        var executor = new BackgroundableExecutor(editor.getProject());
+
+        gptSessionManager.openNewSession(project, new GptExplainTheGistSession(executor, context, code));
         gptSessionManager.proceed();
+
         caretModel.getCurrentCaret().removeSelection();
 
     }

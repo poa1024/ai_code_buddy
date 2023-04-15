@@ -28,7 +28,7 @@ public class TextUtils {
     }
 
     public static String removeCodeFromTheContext(String context, String code) {
-        return context.replaceAll(code, "/*discussed code is here*/");
+        return context.replaceAll(Pattern.quote(code), "/*discussed code is here*/");
     }
 
 }
