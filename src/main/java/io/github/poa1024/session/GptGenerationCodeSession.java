@@ -24,7 +24,7 @@ public class GptGenerationCodeSession extends GptSession {
     private final String after;
 
     public GptGenerationCodeSession(PsiFile psiFile, int start, int end) {
-        super(psiFile);
+        super(psiFile, psiFile.getText());
         this.before = psiFile.getText().substring(0, start);
         this.after = psiFile.getText().substring(end);
     }

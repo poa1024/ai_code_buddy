@@ -18,3 +18,6 @@
 - I think request for the code adjustment could contain several versions of the code, not just the last one
 - template engine to build gpt requests
 - make code in gpt window collapsible (and make html more...reach)
+- log http interaction
+- tests?
+- show warning notifications

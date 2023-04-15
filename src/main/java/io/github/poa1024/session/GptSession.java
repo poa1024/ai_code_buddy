@@ -25,9 +25,9 @@ public abstract class GptSession {
 
     protected final List<GptInteraction> history = new ArrayList<>();
 
-    protected GptSession(PsiFile psiFile) {
+    protected GptSession(PsiFile psiFile, String initialContext) {
         this.psiFile = psiFile;
-        this.initialContext = psiFile.getText();
+        this.initialContext = initialContext;
     }
 
     public void proceed(String userInput, Runnable onAnyChangesCallback) {

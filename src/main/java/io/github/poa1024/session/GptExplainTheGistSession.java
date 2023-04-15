@@ -17,7 +17,7 @@ public class GptExplainTheGistSession extends GptSession {
     private final String code;
 
     public GptExplainTheGistSession(PsiFile psiFile, String code) {
-        super(psiFile);
+        super(psiFile, psiFile.getText().replace(code, ""));
         this.code = code;
     }
 

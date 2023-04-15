@@ -4,7 +4,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.LangDataKeys;
-import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.CaretModel;
 import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiWhiteSpace;
@@ -28,7 +28,7 @@ public class GenerateCodeAction extends AnAction {
         var psiFile = e.getData(LangDataKeys.PSI_FILE);
         var caretModel = editor.getCaretModel();
 
-        var selectedText = getSelectedTextOrTheCurrentComment(editor, psiFile);
+        var selectedText = getSelectedTextOrTheCurrentComment(editor.getCaretModel(), psiFile);
         var userInput = selectedText.getText();
 
         var session = new GptGenerationCodeSession(
@@ -43,9 +43,8 @@ public class GenerateCodeAction extends AnAction {
         caretModel.getCurrentCaret().removeSelection();
     }
 
-    private static SelectedText getSelectedTextOrTheCurrentComment(Editor editor, PsiFile psiFile) {
+    private static SelectedText getSelectedTextOrTheCurrentComment(CaretModel caretModel, PsiFile psiFile) {
 
-        var caretModel = editor.getCaretModel();
         var currentCaret = caretModel.getCurrentCaret();
 
         if (currentCaret.getSelectedText() != null && !currentCaret.getSelectedText().isBlank()) {
