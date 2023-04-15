@@ -4,9 +4,10 @@ import com.intellij.openapi.util.Pair;
 import com.intellij.psi.PsiFile;
 import io.github.poa1024.Configuration;
 import io.github.poa1024.gpt.GptRequestBuilder;
+import io.github.poa1024.model.HumanReadableText;
 import io.github.poa1024.session.model.GptRequest;
 import io.github.poa1024.session.model.GptResponse;
-import io.github.poa1024.util.HumanReadableText;
+import io.github.poa1024.util.TextUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +18,7 @@ public class GptExplainTheGistSession extends GptSession {
     private final String code;
 
     public GptExplainTheGistSession(PsiFile psiFile, String code) {
-        super(psiFile, psiFile.getText().replace(code, ""));
+        super(psiFile, TextUtils.removeCodeFromTheContext(psiFile.getText(), code));
         this.code = code;
     }
 

@@ -7,11 +7,11 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import io.github.poa1024.Configuration;
 import io.github.poa1024.gpt.GptRequestBuilder;
+import io.github.poa1024.model.HumanReadableText;
 import io.github.poa1024.session.model.GptInteraction;
 import io.github.poa1024.session.model.GptRequest;
 import io.github.poa1024.session.model.GptResponse;
-import io.github.poa1024.util.HumanReadableText;
-import io.github.poa1024.util.Utils;
+import io.github.poa1024.util.TextUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,7 +59,7 @@ public class GptGenerationCodeSession extends GptSession {
     @Override
     protected void handleResponse(GptResponse gptResponse) {
 
-        gptResponse.setText(Utils.cleanCode(gptResponse.getText()));
+        gptResponse.setText(TextUtils.cleanCode(gptResponse.getText()));
 
         var project = psiFile.getProject();
         var documentManager = PsiDocumentManager.getInstance(project);

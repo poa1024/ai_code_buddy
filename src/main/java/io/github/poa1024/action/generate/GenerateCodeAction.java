@@ -4,16 +4,12 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.LangDataKeys;
-import com.intellij.openapi.editor.CaretModel;
 import com.intellij.psi.PsiComment;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiWhiteSpace;
 import io.github.poa1024.Configuration;
-import io.github.poa1024.exception.GptException;
 import io.github.poa1024.session.GptGenerationCodeSession;
 import io.github.poa1024.session.GptSessionManager;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import io.github.poa1024.util.NotificationUtils;
+import io.github.poa1024.util.PsiUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class GenerateCodeAction extends AnAction {
@@ -28,56 +24,26 @@ public class GenerateCodeAction extends AnAction {
         var psiFile = e.getData(LangDataKeys.PSI_FILE);
         var caretModel = editor.getCaretModel();
 
-        var selectedText = getSelectedTextOrTheCurrentComment(editor.getCaretModel(), psiFile);
-        var userInput = selectedText.getText();
-
-        var session = new GptGenerationCodeSession(
+        var selectedText = PsiUtils.getSelectedTextOrTheExpectedPsiElement(
                 psiFile,
-                selectedText.getStartOffset(),
-                selectedText.getEndOffset()
+                editor.getCaretModel(),
+                PsiComment.class
         );
 
-        gptSessionManager.openNewSession(editor.getProject(), session);
-        gptSessionManager.proceed(userInput);
-
-        caretModel.getCurrentCaret().removeSelection();
-    }
-
-    private static SelectedText getSelectedTextOrTheCurrentComment(CaretModel caretModel, PsiFile psiFile) {
-
-        var currentCaret = caretModel.getCurrentCaret();
-
-        if (currentCaret.getSelectedText() != null && !currentCaret.getSelectedText().isBlank()) {
-            return new SelectedText(
-                    currentCaret.getSelectedText(),
-                    currentCaret.getSelectionStart(),
-                    currentCaret.getSelectionEnd()
+        if (selectedText != null) {
+            var userInput = selectedText.getText();
+            var session = new GptGenerationCodeSession(
+                    psiFile,
+                    selectedText.getStartOffset(),
+                    selectedText.getEndOffset()
             );
+            gptSessionManager.openNewSession(editor.getProject(), session);
+            gptSessionManager.proceed(userInput);
+
+            caretModel.getCurrentCaret().removeSelection();
+        } else {
+            NotificationUtils.notifyWarning(editor.getProject(), "Not found place for the code insertion");
         }
 
-        var currentNode = psiFile.getNode().findLeafElementAt(caretModel.getOffset());
-
-        while (currentNode instanceof PsiWhiteSpace && !(currentNode instanceof PsiComment)) {
-            currentNode = currentNode.getTreePrev();
-        }
-
-        if (!(currentNode instanceof PsiComment)) {
-            throw new GptException("Didn't find a suitable place for the code insertion");
-        }
-
-        return new SelectedText(
-                currentNode.getText(),
-                currentNode.getTextRange().getStartOffset(),
-                currentNode.getTextRange().getEndOffset()
-        );
     }
-
-    @RequiredArgsConstructor
-    @Getter
-    private static class SelectedText {
-        private final String text;
-        private final int startOffset;
-        private final int endOffset;
-    }
-
 }

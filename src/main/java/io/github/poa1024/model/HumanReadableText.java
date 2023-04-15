@@ -1,4 +1,4 @@
-package io.github.poa1024.util;
+package io.github.poa1024.model;
 
 import lombok.Data;
 

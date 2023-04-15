@@ -1,6 +1,6 @@
 package io.github.poa1024.session.model;
 
-import io.github.poa1024.util.HumanReadableText;
+import io.github.poa1024.model.HumanReadableText;
 import lombok.Builder;
 import lombok.Getter;
 

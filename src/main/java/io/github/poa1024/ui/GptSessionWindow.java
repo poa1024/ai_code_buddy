@@ -1,7 +1,7 @@
 package io.github.poa1024.ui;
 
 import com.intellij.openapi.util.Pair;
-import io.github.poa1024.util.Utils;
+import io.github.poa1024.util.TextUtils;
 import lombok.Getter;
 import org.intellij.lang.annotations.Language;
 
@@ -45,10 +45,10 @@ public class GptSessionWindow {
         var conversationAsString = conversation.stream()
                 .map(qa -> {
                             var list = new ArrayList<String>();
-                            list.add("<b>Q:</b>&ensp;" + Utils.toHtml(qa.first));
-                            list.add("<br>");
+                    list.add("<b>Q:</b>&ensp;" + TextUtils.toHtml(qa.first));
+                    list.add("<br>");
                             if (qa.second != null) {
-                                list.add("<b>A:</b>&ensp;" + Utils.toHtml(qa.second));
+                                list.add("<b>A:</b>&ensp;" + TextUtils.toHtml(qa.second));
                                 list.add("<br>");
                             }
                             list.add("<br>");

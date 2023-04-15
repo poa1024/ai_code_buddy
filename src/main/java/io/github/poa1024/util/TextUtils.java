@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class Utils {
+public class TextUtils {
 
     public static String toHtml(String rawText) {
         return rawText.lines()
@@ -26,4 +26,9 @@ public class Utils {
         }
         return possiblyDirtyCode;
     }
+
+    public static String removeCodeFromTheContext(String context, String code) {
+        return context.replaceAll(code, "/*discussed code is here*/");
+    }
+
 }

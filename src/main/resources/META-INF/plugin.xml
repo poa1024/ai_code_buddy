@@ -7,6 +7,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow factoryClass="io.github.poa1024.ui.GptSessionWindowFactory" id="GPT" anchor="bottom"/>
+        <notificationGroup id="GptNotificationGroup" displayType="BALLOON"/>
     </extensions>
 
     <actions>

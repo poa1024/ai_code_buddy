@@ -20,4 +20,3 @@
 - make code in gpt window collapsible (and make html more...reach)
 - log http interaction
 - tests?
-- show warning notifications

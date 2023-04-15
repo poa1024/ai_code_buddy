@@ -7,6 +7,8 @@ import com.intellij.openapi.actionSystem.LangDataKeys;
 import io.github.poa1024.Configuration;
 import io.github.poa1024.session.GptExplainTheGistSession;
 import io.github.poa1024.session.GptSessionManager;
+import io.github.poa1024.util.NotificationUtils;
+import io.github.poa1024.util.PsiUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class ExplainTheGistAction extends AnAction {
@@ -18,11 +20,17 @@ public class ExplainTheGistAction extends AnAction {
 
         var editor = e.getRequiredData(CommonDataKeys.EDITOR);
         var psiFile = e.getData(LangDataKeys.PSI_FILE);
+        var project = editor.getProject();
 
         var caretModel = editor.getCaretModel();
-        var selectedText = caretModel.getCurrentCaret().getSelectedText();
+        var selectedText = PsiUtils.getSelectedTextOrTheExpectedPsiElement(psiFile, caretModel);
 
-        gptSessionManager.openNewSession(editor.getProject(), new GptExplainTheGistSession(psiFile, selectedText));
+        if (selectedText == null) {
+            NotificationUtils.notifyWarning(project, "Not found code to explain");
+            return;
+        }
+
+        gptSessionManager.openNewSession(project, new GptExplainTheGistSession(psiFile, selectedText.getText()));
         gptSessionManager.proceed();
         caretModel.getCurrentCaret().removeSelection();
 
