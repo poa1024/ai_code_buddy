@@ -1,12 +1,12 @@
 <idea-plugin>
-    <id>io.github.poa1024.chatgpt_intellij_plugin</id>
-    <name>Chat GPT</name>
+    <id>io.github.poa1024.chatgpt_mate</id>
+    <name>Chat GPT Mate</name>
     <vendor email="poa1024@gmail.com"/>
 
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="io.github.poa1024.ui.GptSessionWindowFactory" id="GPT" anchor="bottom"/>
+        <toolWindow factoryClass="io.github.poa1024.chatgpt.mate.intellij.ui.GptSessionWindowFactory" id="GPT" anchor="bottom"/>
         <notificationGroup id="GptNotificationGroup" displayType="BALLOON"/>
     </extensions>
 
@@ -19,13 +19,13 @@
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <action
                     id="poa1024.chatGpt.explain"
-                    class="io.github.poa1024.action.explain.ExplainTheGistAction"
+                    class="io.github.poa1024.chatgpt.mate.intellij.action.explain.ExplainTheGistAction"
                     text="Explain the Gist"
                     description="Explain the gist">
             </action>
             <action
                     id="poa1024.chatGpt.explainInDetails"
-                    class="io.github.poa1024.action.explain.ExplainInDetailsAction"
+                    class="io.github.poa1024.chatgpt.mate.intellij.action.explain.ExplainInDetailsAction"
                     text="Explain in Details"
                     description="Explain in details">
             </action>
@@ -34,7 +34,7 @@
 
         <action
                 id="poa1024.chatGpt.generateCode"
-                class="io.github.poa1024.action.generate.GenerateCodeAction"
+                class="io.github.poa1024.chatgpt.mate.intellij.action.generate.GenerateCodeAction"
                 text="GPT. Create Code Based on the Description"
                 description="GPT. Create code based on the description">
             <add-to-group group-id="GenerateGroup" anchor="last"/>
