@@ -9,14 +9,6 @@
     </properties>
     <border type="none"/>
     <children>
-      <component id="27b12" class="javax.swing.JTextPane" binding="history">
-        <constraints border-constraint="Center"/>
-        <properties>
-          <contentType value="text/html"/>
-          <editable value="false"/>
-          <text value="&lt;html&gt;&#10;  &lt;head&gt;&#10;&#10;  &lt;/head&gt;&#10;  &lt;body&gt;&#10;    &#10;  &lt;/body&gt;&#10;&lt;/html&gt;&#10;"/>
-        </properties>
-      </component>
       <component id="a31a8" class="javax.swing.JTextField" binding="terminal">
         <constraints border-constraint="Last"/>
         <properties>
@@ -24,6 +16,23 @@
           <opaque value="false"/>
         </properties>
       </component>
+      <scrollpane id="7279f">
+        <constraints border-constraint="Center"/>
+        <properties>
+          <horizontalScrollBarPolicy value="31"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="27b12" class="javax.swing.JTextPane" binding="history">
+            <constraints/>
+            <properties>
+              <contentType value="text/html"/>
+              <editable value="false"/>
+              <text value="&lt;html&gt;&#10;  &lt;head&gt;&#10;    &#10;  &lt;/head&gt;&#10;  &lt;body&gt;&#10;  &lt;/body&gt;&#10;&lt;/html&gt;&#10;"/>
+            </properties>
+          </component>
+        </children>
+      </scrollpane>
     </children>
   </grid>
 </form>

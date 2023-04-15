@@ -1,18 +1,33 @@
 package io.github.poa1024.ui;
 
-import io.github.poa1024.sesssion.model.QARound;
+import com.intellij.openapi.util.Pair;
+import io.github.poa1024.util.Utils;
 import lombok.Getter;
 import org.intellij.lang.annotations.Language;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 @Getter
 public class GptSessionWindow {
 
     @Language("html")
-    private static final String HISTORY_HTML = "<html><body>%s</body></html>";
+    private static final String BASE_HTML = "" +
+            "<html>" +
+            "  <head>" +
+            "    <style>" +
+            "      blockquote\n" +
+            "        {\n" +
+            "          font-family: Monospaced;\n" +
+            "        }" +
+            "    </style>" +
+            "  </head>" +
+            "  <body>%s</body>" +
+            "</html>";
 
     private JPanel content;
     private JTextPane history;
@@ -26,29 +41,24 @@ public class GptSessionWindow {
         });
     }
 
-    public void printConversation(List<QARound> conversation) {
-        var text = String.format(HISTORY_HTML, toText(conversation));
+    public void printConversation(List<Pair<String, String>> conversation) {
+        var conversationAsString = conversation.stream()
+                .map(qa -> {
+                            var list = new ArrayList<String>();
+                            list.add("<b>Q:</b>&ensp;" + Utils.toHtml(qa.first));
+                            list.add("<br>");
+                            if (qa.second != null) {
+                                list.add("<b>A:</b>&ensp;" + Utils.toHtml(qa.second));
+                                list.add("<br>");
+                            }
+                            list.add("<br>");
+                            return list;
+                        }
+                )
+                .flatMap(Collection::stream)
+                .collect(Collectors.joining());
+        var text = String.format(BASE_HTML, conversationAsString);
         history.setText(text);
-    }
-
-    private static CharSequence toText(List<QARound> history) {
-        var res = new StringBuilder();
-
-        history.forEach(qaRound -> {
-            res.append("<b>Q: </b>");
-            res.append(qaRound.getQuestion().getText());
-            res.append("<br>");
-            if (qaRound.getAnswer() != null) {
-                res.append("<b>A: </b>");
-                res.append("<i>");
-                res.append(qaRound.getAnswer().getDesc());
-                res.append("</i>");
-                res.append("<br>");
-            }
-            res.append("<br>");
-        });
-
-        return res;
     }
 
 }

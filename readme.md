@@ -1,21 +1,20 @@
 ## The plan
 
 - code generation
-    - should work in the json/sql files, in the db console (maybe already work, need to check)
+  - should work in the json/sql files, in the db console (maybe already work, need to check)
 - readme.me generation
-- providing the whole project as a context for code explanation actions
 - checking the code, suggesting improvements, checking for bugs
-- refactoring existing code (with a dialog?)
-- progress bar (request to openai)
 - continuous text/code generation (???)
 - errors/warnings?
 - rf: a lot of possible cast/npe exceptions, need to fix
 - consider number of tokens in the openai request body
-- maybe current gpt questions are too verbose?
-- clean comments chars?
 - hotkeys
-- use additional threads for http calls?
 - validate response and retry if needed
-- if something goes wrong with the psi manipulation, just recreate the document from scratch
-- refactor the class structure
 - configuration for apikey
+- if file has changed since the last code generation - warning - suggestion to highlight the code to change
+- ability to highlight the code and refactor it (new scenario)
+- gpt window can contain multiple sessions (panels)?
+- new scenario - just start the conversation with gpt in the window
+- I think request for the code adjustment could contain several versions of the code, not just the last one
+- template engine to build gpt requests
+- make code in gpt window collapsible (and make html more...reach)

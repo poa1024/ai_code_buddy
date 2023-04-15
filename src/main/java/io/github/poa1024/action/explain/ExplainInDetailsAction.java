@@ -5,17 +5,22 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.ProgressManager;
+import com.intellij.openapi.progress.Task;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import io.github.poa1024.Configuration;
 import io.github.poa1024.gpt.GptClient;
-import io.github.poa1024.gpt.GptQuestionBuilder;
+import io.github.poa1024.gpt.GptRequestBuilder;
 import org.jetbrains.annotations.NotNull;
 
 public class ExplainInDetailsAction extends AnAction {
 
     private final GptClient gptClient = Configuration.GPT_CLIENT;
-    private final GptQuestionBuilder gptQuestionBuilder = Configuration.GPT_QUESTION_BUILDER;
+    private final GptRequestBuilder gptRequestBuilder = Configuration.GPT_REQUEST_BUILDER;
+
+    private final ProgressManager progressManager = ProgressManager.getInstance();
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
@@ -30,23 +35,28 @@ public class ExplainInDetailsAction extends AnAction {
         var caretModel = editor.getCaretModel();
         var selectedText = caretModel.getCurrentCaret().getSelectedText();
 
-        var res = gptClient
-                .ask(gptQuestionBuilder.askForDetailedExplanation(selectedText))
-                .getFirstChoice();
+        progressManager.run(new Task.Backgroundable(project, "GPT request...") {
+            @Override
+            public void run(@NotNull ProgressIndicator indicator) {
+                var req = gptRequestBuilder.askForDetailedExplanation();
+                req = gptRequestBuilder.appendCode(req, selectedText);
+                var res = gptClient
+                        .ask(req)
+                        .getFirstChoice();
 
-        int selectionStart = caretModel.getCurrentCaret().getSelectionStart();
-        int selectionEnd = caretModel.getCurrentCaret().getSelectionEnd();
+                int selectionStart = caretModel.getCurrentCaret().getSelectionStart();
+                int selectionEnd = caretModel.getCurrentCaret().getSelectionEnd();
 
-        WriteCommandAction.runWriteCommandAction(
-                project,
-                () -> {
-                    document.replaceString(selectionStart, selectionEnd, res);
-                    documentManager.commitDocument(document);
-                    styleManager.reformatText(psiFile, selectionStart, selectionStart + res.length());
-                }
-
-
-        );
+                WriteCommandAction.runWriteCommandAction(
+                        project,
+                        () -> {
+                            document.replaceString(selectionStart, selectionEnd, res);
+                            documentManager.commitDocument(document);
+                            styleManager.reformatText(psiFile, selectionStart, selectionStart + res.length());
+                        }
+                );
+            }
+        });
         caretModel.getCurrentCaret().removeSelection();
     }
 

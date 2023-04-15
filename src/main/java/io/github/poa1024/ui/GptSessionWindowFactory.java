@@ -6,20 +6,17 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.ContentFactory;
 import io.github.poa1024.Configuration;
-import io.github.poa1024.sesssion.GptCodeGenerationSessionManager;
-import io.github.poa1024.sesssion.model.Question;
+import io.github.poa1024.session.GptSessionManager;
 import org.jetbrains.annotations.NotNull;
 
-public class GptCodeGenerationSessionWindowFactory implements ToolWindowFactory, DumbAware {
+public class GptSessionWindowFactory implements ToolWindowFactory, DumbAware {
 
-    private final GptCodeGenerationSessionManager gptCodeGenerationSessionManager = Configuration.GPT_CODE_GENERATION_SESSION_MANAGER;
+    private final GptSessionManager gptSessionManager = Configuration.GPT_SESSION_MANAGER;
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
-        var gptSessionWindow = new GptSessionWindow(text -> {
-            gptCodeGenerationSessionManager.askQuestion(new Question(text));
-        });
-        gptCodeGenerationSessionManager.setSessionWindow(gptSessionWindow);
+        var gptSessionWindow = new GptSessionWindow(gptSessionManager::proceed);
+        gptSessionManager.setSessionWindow(gptSessionWindow);
         var contentFactory = ContentFactory.SERVICE.getInstance();
         var content = contentFactory.createContent(gptSessionWindow.getContent(), "", false);
         toolWindow.getContentManager().addContent(content);
