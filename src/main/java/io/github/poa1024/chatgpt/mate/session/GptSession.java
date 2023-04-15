@@ -1,8 +1,7 @@
 package io.github.poa1024.chatgpt.mate.session;
 
-import io.github.poa1024.chatgpt.mate.Configuration;
 import io.github.poa1024.chatgpt.mate.Executor;
-import io.github.poa1024.chatgpt.mate.GptClient;
+import io.github.poa1024.chatgpt.mate.gptclient.GptClient;
 import io.github.poa1024.chatgpt.mate.session.model.GptInteraction;
 import io.github.poa1024.chatgpt.mate.session.model.GptRequest;
 import io.github.poa1024.chatgpt.mate.session.model.GptResponse;
@@ -13,14 +12,14 @@ import java.util.List;
 
 public abstract class GptSession {
 
-    private final GptClient gptClient = Configuration.GPT_CLIENT;
-
+    protected final GptClient gptClient;
     protected final Executor executor;
     protected final String initialContext;
 
     protected final List<GptInteraction> history = new ArrayList<>();
 
-    protected GptSession(Executor executor, String initialContext) {
+    protected GptSession(GptClient gptClient, Executor executor, String initialContext) {
+        this.gptClient = gptClient;
         this.executor = executor;
         this.initialContext = initialContext;
     }

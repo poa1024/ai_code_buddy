@@ -1,4 +1,4 @@
-package io.github.poa1024.chatgpt.mate;
+package io.github.poa1024.chatgpt.mate.gptclient;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class GptClient {
+public class GptClientImpl implements GptClient {
 
     private static final String GPT_VERSION = "gpt-3.5-turbo";
 
@@ -27,7 +27,7 @@ public class GptClient {
             .create();
 
     @SneakyThrows
-    public GptClient() {
+    public GptClientImpl() {
         //todo refactor this insanity
         try (var reader = new FileReader(System.getProperty("user.home") + "/chatgpt_intellij_plugin.properties")) {
             var properties = PropertiesUtil.loadProperties(reader);
@@ -36,6 +36,7 @@ public class GptClient {
     }
 
     @SneakyThrows
+    @Override
     public GptResponse ask(String text) {
         var req = new GptRequest(Collections.singletonList(new GptMessage("user", text)));
 
@@ -60,27 +61,6 @@ public class GptClient {
     private static class GptRequest {
         private final String model = GPT_VERSION;
         private final List<GptMessage> messages;
-    }
-
-    @RequiredArgsConstructor
-    private static class GptMessage {
-        private final String role;
-        private final String content;
-    }
-
-    @RequiredArgsConstructor
-    public static class GptResponse {
-
-        private final List<GptChoice> choices;
-
-        public String getFirstChoice() {
-            return choices.get(0).message.content;
-        }
-    }
-
-    @RequiredArgsConstructor
-    public static class GptChoice {
-        private final GptMessage message;
     }
 
 }

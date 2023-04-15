@@ -9,6 +9,7 @@ import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import io.github.poa1024.chatgpt.mate.Configuration;
+import io.github.poa1024.chatgpt.mate.gptclient.GptClient;
 import io.github.poa1024.chatgpt.mate.intellij.BackgroundableExecutor;
 import io.github.poa1024.chatgpt.mate.session.GptGenerationCodeSession;
 import io.github.poa1024.chatgpt.mate.session.GptSessionManager;
@@ -20,6 +21,7 @@ public class GenerateCodeAction extends AnAction {
 
 
     private final GptSessionManager gptSessionManager = Configuration.GPT_SESSION_MANAGER;
+    private final GptClient gptClient = Configuration.GPT_CLIENT;
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
@@ -51,6 +53,7 @@ public class GenerateCodeAction extends AnAction {
                                 }
                         );
                     },
+                    gptClient,
                     new BackgroundableExecutor(editor.getProject()),
                     psiFile.getText(),
                     selectedText.getStartOffset(),

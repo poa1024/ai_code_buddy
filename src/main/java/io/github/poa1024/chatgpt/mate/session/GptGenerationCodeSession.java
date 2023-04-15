@@ -3,6 +3,7 @@ package io.github.poa1024.chatgpt.mate.session;
 import io.github.poa1024.chatgpt.mate.Configuration;
 import io.github.poa1024.chatgpt.mate.Executor;
 import io.github.poa1024.chatgpt.mate.GptRequestBuilder;
+import io.github.poa1024.chatgpt.mate.gptclient.GptClient;
 import io.github.poa1024.chatgpt.mate.model.HumanReadableText;
 import io.github.poa1024.chatgpt.mate.session.model.GptInteraction;
 import io.github.poa1024.chatgpt.mate.session.model.GptRequest;
@@ -17,7 +18,7 @@ public class GptGenerationCodeSession extends GptSession {
 
     private final GptRequestBuilder gptQuestionBuilder = Configuration.GPT_REQUEST_BUILDER;
 
-    private final GeneratedCodeHandler generateCodeHandler;
+    private final GeneratedCodeHandler generatedCodeHandler;
     private final String before;
     private final String after;
 
@@ -26,14 +27,15 @@ public class GptGenerationCodeSession extends GptSession {
     }
 
     public GptGenerationCodeSession(
-            GeneratedCodeHandler generateCodeHandler,
+            GeneratedCodeHandler generatedCodeHandler,
+            GptClient gptClient,
             Executor executor,
             String context,
             int start,
             int end
     ) {
-        super(executor, context);
-        this.generateCodeHandler = generateCodeHandler;
+        super(gptClient, executor, context);
+        this.generatedCodeHandler = generatedCodeHandler;
         this.before = context.substring(0, start);
         this.after = context.substring(end);
     }
@@ -65,7 +67,7 @@ public class GptGenerationCodeSession extends GptSession {
         gptResponse.setText(TextUtils.cleanCode(gptResponse.getText()));
         var newCode = gptResponse.getText();
         var newContext = before + newCode + after;
-        generateCodeHandler.handle(newCode, newContext, before.length());
+        generatedCodeHandler.handle(newCode, newContext, before.length());
     }
 
 
