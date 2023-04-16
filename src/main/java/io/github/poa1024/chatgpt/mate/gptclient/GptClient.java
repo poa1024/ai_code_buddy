@@ -7,18 +7,18 @@ import java.util.List;
 
 public interface GptClient {
 
-    GptResponse ask(String text);
+    Response ask(String text);
 
     @RequiredArgsConstructor
-    class GptMessage {
+    class Message {
         private final String role;
         private final String content;
     }
 
     @RequiredArgsConstructor
-    class GptResponse {
+    class Response {
 
-        private final List<GptChoice> choices;
+        private final List<Choice> choices;
 
         public String getFirstChoice() {
             return choices.get(0).message.content;
@@ -26,8 +26,8 @@ public interface GptClient {
     }
 
     @RequiredArgsConstructor
-    class GptChoice {
-        private final GptMessage message;
+    class Choice {
+        private final Message message;
     }
 
 }

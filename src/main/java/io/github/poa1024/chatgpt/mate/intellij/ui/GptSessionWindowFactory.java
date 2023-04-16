@@ -17,7 +17,7 @@ public class GptSessionWindowFactory implements ToolWindowFactory, DumbAware {
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
         var gptSessionWindow = new GptSessionWindow(gptSessionManager::proceed);
         gptSessionManager.setSessionWindow(gptSessionWindow);
-        var contentFactory = ContentFactory.SERVICE.getInstance();
+        var contentFactory = ContentFactory.getInstance();
         var content = contentFactory.createContent(gptSessionWindow.getContent(), "", false);
         toolWindow.getContentManager().addContent(content);
     }

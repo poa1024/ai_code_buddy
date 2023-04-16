@@ -37,8 +37,8 @@ public class GptClientImpl implements GptClient {
 
     @SneakyThrows
     @Override
-    public GptResponse ask(String text) {
-        var req = new GptRequest(Collections.singletonList(new GptMessage("user", text)));
+    public Response ask(String text) {
+        var req = new Request(Collections.singletonList(new Message("user", text)));
 
         var url = "https://api.openai.com/v1/chat/completions";
         var request = HttpRequest.newBuilder()
@@ -54,13 +54,13 @@ public class GptClientImpl implements GptClient {
             throw new IllegalStateException(response.body());
         }
 
-        return gson.fromJson(response.body(), GptResponse.class);
+        return gson.fromJson(response.body(), Response.class);
     }
 
     @RequiredArgsConstructor
-    private static class GptRequest {
+    private static class Request {
         private final String model = GPT_VERSION;
-        private final List<GptMessage> messages;
+        private final List<Message> messages;
     }
 
 }
