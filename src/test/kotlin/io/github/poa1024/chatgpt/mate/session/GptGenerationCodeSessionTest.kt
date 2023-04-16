@@ -89,8 +89,8 @@ class GptGenerationCodeSessionTest {
         
         """.trimIndent()
 
-    @DataProvider(name = "forBaseTest")
-    fun dataProvider(): Array<Array<Any>> {
+    @DataProvider(name = "codeGenerationScenarios")
+    fun codeGenerationScenarios(): Array<Array<Any>> {
 
         return arrayOf(
             arrayOf(
@@ -111,8 +111,9 @@ class GptGenerationCodeSessionTest {
         )
     }
 
-    @Test(dataProvider = "forBaseTest")
-    fun baseTest(
+
+    @Test(dataProvider = "codeGenerationScenarios")
+    fun testCodeGenerationScenario(
         userInput: String,
         codeGenerateByGpt: String,
         expectedCode: String
