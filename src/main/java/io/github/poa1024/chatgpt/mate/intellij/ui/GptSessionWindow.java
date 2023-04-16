@@ -26,7 +26,9 @@ public class GptSessionWindow {
                     }
                         
                     blockquote {
+                        padding: 0.5em 15px;
                         font-family: Monospaced, sans-serif;
+                        border: 1px dashed black;
                     }
                 </style>
             </head>
@@ -37,6 +39,7 @@ public class GptSessionWindow {
     private JPanel content;
     private JTextPane history;
     private JTextField terminal;
+    private JScrollPane scrollPanel;
 
     public GptSessionWindow(Consumer<String> onEnter) {
         terminal.addActionListener(e -> {
@@ -64,6 +67,10 @@ public class GptSessionWindow {
                 .collect(Collectors.joining());
         var text = String.format(BASE_HTML, conversationAsString);
         history.setText(text);
+        SwingUtilities.invokeLater(() -> {
+            var vertical = scrollPanel.getVerticalScrollBar();
+            vertical.setValue(vertical.getMaximum());
+        });
     }
 
 }

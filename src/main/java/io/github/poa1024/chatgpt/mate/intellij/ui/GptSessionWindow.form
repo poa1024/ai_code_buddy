@@ -16,7 +16,7 @@
           <opaque value="false"/>
         </properties>
       </component>
-      <scrollpane id="7279f">
+      <scrollpane id="7279f" binding="scrollPanel">
         <constraints border-constraint="Center"/>
         <properties>
           <horizontalScrollBarPolicy value="31"/>
