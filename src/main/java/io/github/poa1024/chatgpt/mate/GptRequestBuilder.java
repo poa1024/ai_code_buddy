@@ -28,10 +28,10 @@ public class GptRequestBuilder {
         return "\nI have a new code related question: " + replica;
     }
 
-    public String askToGeneratedCode(String request) {
+    public String askToGenerateCode(String request) {
         return "\nGenerate code based on the provided request. " +
-                baseCodeGenerationRequest() +
-                "\nRequest: [ " + request + " ]";
+               baseCodeGenerationRequest() +
+               "\nRequest: [ " + request + " ]";
     }
 
     public String askToChangeGeneratedCode(String request) {

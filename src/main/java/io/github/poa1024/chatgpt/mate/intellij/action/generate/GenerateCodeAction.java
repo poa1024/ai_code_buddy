@@ -39,25 +39,32 @@ public class GenerateCodeAction extends AnAction {
         );
 
         if (selectedText != null) {
+
             var userInput = selectedText.getText();
+            int startOffset = selectedText.getStartOffset();
+            int endOffset = selectedText.getEndOffset();
+
+            var before = psiFile.getText().substring(0, startOffset);
+            var after = psiFile.getText().substring(endOffset);
+            var context = before + after;
+
             var session = new GptGenerationCodeSession(
-                    (code, contextWithCode, offset) -> {
+                    (code) -> {
                         var document = documentManager.getDocument(psiFile);
                         var styleManager = CodeStyleManager.getInstance(project);
                         WriteCommandAction.runWriteCommandAction(
                                 project,
                                 () -> {
-                                    document.setText(contextWithCode);
+                                    document.setText(before + code + after);
                                     documentManager.commitDocument(document);
-                                    styleManager.reformatText(psiFile, offset, offset + code.length() + 1);
+                                    styleManager.reformatText(psiFile, startOffset, startOffset + code.length() + 1);
                                 }
                         );
                     },
                     gptClient,
                     new BackgroundableExecutor(editor.getProject()),
-                    psiFile.getText(),
-                    selectedText.getStartOffset(),
-                    selectedText.getEndOffset()
+                    context,
+                    startOffset
             );
             gptSessionManager.openNewSession(project, session);
             gptSessionManager.proceed(userInput);

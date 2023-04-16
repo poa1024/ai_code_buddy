@@ -19,15 +19,9 @@
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <action
                     id="poa1024.chatGpt.explain"
-                    class="io.github.poa1024.chatgpt.mate.intellij.action.explain.ExplainTheGistAction"
-                    text="Explain the Gist"
-                    description="Explain the gist">
-            </action>
-            <action
-                    id="poa1024.chatGpt.explainInDetails"
-                    class="io.github.poa1024.chatgpt.mate.intellij.action.explain.ExplainInDetailsAction"
-                    text="Explain in Details"
-                    description="Explain in details">
+                    class="io.github.poa1024.chatgpt.mate.intellij.action.explain.ExplainCodeAction"
+                    text="Explain the Code"
+                    description="Explain the code">
             </action>
         </group>
 

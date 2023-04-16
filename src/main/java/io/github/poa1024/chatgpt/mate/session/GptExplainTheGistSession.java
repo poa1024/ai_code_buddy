@@ -10,6 +10,7 @@ import io.github.poa1024.chatgpt.mate.session.model.GptResponse;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class GptExplainTheGistSession extends GptSession {
@@ -18,7 +19,7 @@ public class GptExplainTheGistSession extends GptSession {
     private final String code;
 
     public GptExplainTheGistSession(GptClient gptClient, Executor executor, String context, String code) {
-        super(gptClient, executor, context);
+        super(gptClient, executor, removeCodeFromTheContext(context, code));
         this.code = code;
     }
 
@@ -26,7 +27,7 @@ public class GptExplainTheGistSession extends GptSession {
     protected GptRequest createRequest(String userInput) {
         String gptRequest;
         if (history.isEmpty()) {
-            userInput = "Explain the gist";
+            userInput = "Explain the code";
             gptRequest = gptQuestionBuilder.askForShortExplanation();
             gptRequest = gptQuestionBuilder.appendCode(gptRequest, code);
 
@@ -55,6 +56,10 @@ public class GptExplainTheGistSession extends GptSession {
                         qa.getGptResponse() != null ? qa.getGptResponse().getText() : null)
                 )
                 .collect(Collectors.toList());
+    }
+
+    public static String removeCodeFromTheContext(String context, String code) {
+        return context.replaceAll(Pattern.quote(code), "/*discussed code is here*/");
     }
 
 }

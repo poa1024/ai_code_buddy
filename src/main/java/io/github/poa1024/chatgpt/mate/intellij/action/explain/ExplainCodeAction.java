@@ -11,10 +11,9 @@ import io.github.poa1024.chatgpt.mate.session.GptExplainTheGistSession;
 import io.github.poa1024.chatgpt.mate.session.GptSessionManager;
 import io.github.poa1024.chatgpt.mate.util.NotificationUtils;
 import io.github.poa1024.chatgpt.mate.util.PsiUtils;
-import io.github.poa1024.chatgpt.mate.util.TextUtils;
 import org.jetbrains.annotations.NotNull;
 
-public class ExplainTheGistAction extends AnAction {
+public class ExplainCodeAction extends AnAction {
 
     private final GptSessionManager gptSessionManager = Configuration.GPT_SESSION_MANAGER;
     private final GptClient gptClient = Configuration.GPT_CLIENT;
@@ -35,7 +34,7 @@ public class ExplainTheGistAction extends AnAction {
         }
 
         var code = selectedText.getText();
-        var context = TextUtils.removeCodeFromTheContext(psiFile.getText(), code);
+        var context = psiFile.getText();
         var executor = new BackgroundableExecutor(editor.getProject());
 
         gptSessionManager.openNewSession(project, new GptExplainTheGistSession(gptClient, executor, context, code));

@@ -12,39 +12,31 @@ import io.github.poa1024.chatgpt.mate.util.TextUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class GptGenerationCodeSession extends GptSession {
 
     private final GptRequestBuilder gptQuestionBuilder = Configuration.GPT_REQUEST_BUILDER;
 
-    private final GeneratedCodeHandler generatedCodeHandler;
-    private final String before;
-    private final String after;
-
-    public interface GeneratedCodeHandler {
-        void handle(String code, String contextWithCode, int codeOffset);
-    }
+    private final Consumer<String> generatedCodeHandler;
 
     public GptGenerationCodeSession(
-            GeneratedCodeHandler generatedCodeHandler,
+            Consumer<String> generatedCodeHandler,
             GptClient gptClient,
             Executor executor,
             String context,
-            int start,
-            int end
+            int offset
     ) {
-        super(gptClient, executor, context);
+        super(gptClient, executor, createContext(context, offset));
         this.generatedCodeHandler = generatedCodeHandler;
-        this.before = context.substring(0, start);
-        this.after = context.substring(end);
     }
 
     @Override
     protected GptRequest createRequest(String userInput) {
         String gptRequest;
         if (history.isEmpty()) {
-            gptRequest = gptQuestionBuilder.askToGeneratedCode(userInput);
+            gptRequest = gptQuestionBuilder.askToGenerateCode(userInput);
         } else {
             gptRequest = gptQuestionBuilder.askToChangeGeneratedCode(userInput);
             gptRequest = gptQuestionBuilder.appendPreviouslyGenerateCode(
@@ -65,9 +57,8 @@ public class GptGenerationCodeSession extends GptSession {
     @Override
     protected void handleResponse(GptResponse gptResponse) {
         gptResponse.setText(TextUtils.cleanCode(gptResponse.getText()));
-        var newCode = gptResponse.getText();
-        var newContext = before + newCode + after;
-        generatedCodeHandler.handle(newCode, newContext, before.length());
+        var code = gptResponse.getText();
+        generatedCodeHandler.accept(code);
     }
 
 
@@ -80,6 +71,10 @@ public class GptGenerationCodeSession extends GptSession {
                         )
                 )
                 .collect(Collectors.toList());
+    }
+
+    private static String createContext(String context, int offset) {
+        return context.substring(0, offset) + "/*your code will be here*/" + context.substring(offset);
     }
 
 

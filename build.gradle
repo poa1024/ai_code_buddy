@@ -34,8 +34,9 @@ tasks {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    testImplementation 'io.mockk:mockk:1.13.5'
+    testImplementation 'org.testng:testng:7.7.0'
+    testImplementation 'com.winterbe:expekt:0.5.0'
 }
 
 intellij {
@@ -47,5 +48,5 @@ patchPluginXml {
       No notes so far<br>"""
 }
 test {
-    useJUnitPlatform()
+    useTestNG()
 }
