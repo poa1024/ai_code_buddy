@@ -43,8 +43,8 @@ public class GptRequestBuilder {
 
     private static String baseCodeGenerationRequest() {
         return "\nYor response should contain the code only. " +
-                "\nDont' leave any comments or notes. " +
-                "\nDon't surround your response with quotes.";
+               "\nDon't leave any comments or notes. " +
+               "\nDon't surround your response with quotes.";
     }
 
 
