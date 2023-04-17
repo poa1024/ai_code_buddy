@@ -1,25 +1,25 @@
 <idea-plugin>
-    <id>io.github.poa1024.chatgpt_mate</id>
-    <name>Chat GPT Mate</name>
+    <id>io.github.poa1024.ai.code.buddy</id>
+    <name>AI Code Buddy</name>
     <vendor email="poa1024@gmail.com"/>
 
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="io.github.poa1024.chatgpt.mate.intellij.ui.GptSessionWindowFactory" id="GPT" anchor="bottom"/>
-        <notificationGroup id="GptNotificationGroup" displayType="BALLOON"/>
+        <toolWindow factoryClass="io.github.poa1024.ai.code.buddy.intellij.ui.SessionWindowFactory" id="GPT" anchor="bottom"/>
+        <notificationGroup id="AICBNotificationGroup" displayType="BALLOON"/>
     </extensions>
 
     <actions>
 
         <group id="poa1024.chatGpt"
-               text="Chat GPT"
+               text="GPT"
                popup="true"
-               description="Ask Chat GPT">
+               description="Ask GPT">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <action
-                    id="poa1024.chatGpt.explain"
-                    class="io.github.poa1024.chatgpt.mate.intellij.action.explain.ExplainCodeAction"
+                    id="poa1024.gpt.explain"
+                    class="io.github.poa1024.ai.code.buddy.intellij.action.ExplainCodeAction"
                     text="Explain the Code"
                     description="Explain the code">
             </action>
@@ -27,10 +27,10 @@
 
 
         <action
-                id="poa1024.chatGpt.generateCode"
-                class="io.github.poa1024.chatgpt.mate.intellij.action.generate.GenerateCodeAction"
-                text="GPT. Create Code Based on the Description"
-                description="GPT. Create code based on the description">
+                id="poa1024.gpt.generateCode"
+                class="io.github.poa1024.ai.code.buddy.intellij.action.GenerateCodeAction"
+                text="GPT. Generate Code Based on the Description"
+                description="GPT. Generate code based on the description">
             <add-to-group group-id="GenerateGroup" anchor="last"/>
         </action>
 

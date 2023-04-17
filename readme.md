@@ -12,13 +12,13 @@
 - gpt window can contain multiple sessions (panels)?
 - I think request for the code adjustment could contain several versions of the code, not just the last one
 - make code in gpt window collapsible (and make html more...reach)
+- log http interaction
+- add tests for the explain scenario
+- readme.me generation (and updating readme based on the project changes)
 
-
-- test several requests for the code generation logic, add tests for the explain scenario
+- if we can't parse result from gpt, just show the raw response in the chat
 - template engine to build gpt requests
 - ability to highlight the code and refactor it (new scenario)
 - new scenario - just start the conversation with gpt in the window
 - configuration for apikey
-- log http interaction
-- readme.me generation (and updating readme based on the project changes)
 - publish plugin?
