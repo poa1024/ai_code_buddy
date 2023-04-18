@@ -1,7 +1,7 @@
 package io.github.poa1024.ai.code.buddy.session;
 
+import freemarker.template.Template;
 import io.github.poa1024.ai.code.buddy.AIClient;
-import io.github.poa1024.ai.code.buddy.AIRequestBuilder;
 import io.github.poa1024.ai.code.buddy.Executor;
 import io.github.poa1024.ai.code.buddy.conf.Configuration;
 import io.github.poa1024.ai.code.buddy.model.HumanReadableText;
@@ -9,19 +9,24 @@ import io.github.poa1024.ai.code.buddy.session.model.AIInteraction;
 import io.github.poa1024.ai.code.buddy.session.model.AIRequest;
 import io.github.poa1024.ai.code.buddy.session.model.AIResponse;
 import io.github.poa1024.ai.code.buddy.util.TextUtils;
+import lombok.SneakyThrows;
+import lombok.val;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-public class GenerationCodeSession extends Session {
+public class GenerateCodeSession extends Session {
 
-    private final AIRequestBuilder aiRequestBuilder = Configuration.getInstance().getAiRequestBuilder();
+    private final Template reqTemplate;
 
     private final Consumer<String> generatedCodeHandler;
 
-    public GenerationCodeSession(
+    @SneakyThrows
+    public GenerateCodeSession(
             Consumer<String> generatedCodeHandler,
             AIClient aiClient,
             Executor executor,
@@ -30,27 +35,31 @@ public class GenerationCodeSession extends Session {
     ) {
         super(aiClient, executor, createContext(context, offset));
         this.generatedCodeHandler = generatedCodeHandler;
+        this.reqTemplate = Configuration.getInstance()
+                .getFreemarkerConf()
+                .getTemplate("code_generation_req.ftl");
     }
 
     @Override
+    @SneakyThrows
     protected AIRequest createRequest(String userInput) {
-        String request;
-        if (history.isEmpty()) {
-            request = aiRequestBuilder.askToGenerateCode(userInput);
-        } else {
-            request = aiRequestBuilder.askToChangeGeneratedCode(userInput);
-            request = aiRequestBuilder.appendPreviouslyGenerateCode(
-                    request, history.stream()
-                            .map(AIInteraction::requireResponse)
-                            .map(AIResponse::getText)
-                            .collect(Collectors.toList())
+        var templateModel = new HashMap<>();
 
-            );
-        }
-        request = aiRequestBuilder.appendContext(request, initialContext);
+        templateModel.put("userInput", userInput);
+        templateModel.put("context", initialContext);
+
+        val codeVersions = history.stream()
+                .map(AIInteraction::requireResponse)
+                .map(AIResponse::getText)
+                .collect(Collectors.toList());
+
+        templateModel.put("codeVersions", codeVersions);
+
+        var stringWriter = new StringWriter();
+        reqTemplate.process(templateModel, stringWriter);
         return AIRequest.builder()
                 .question(new HumanReadableText(userInput))
-                .body(request)
+                .body(stringWriter.toString())
                 .build();
     }
 

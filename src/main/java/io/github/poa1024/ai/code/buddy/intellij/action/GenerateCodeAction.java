@@ -11,7 +11,7 @@ import com.intellij.psi.codeStyle.CodeStyleManager;
 import io.github.poa1024.ai.code.buddy.AIClient;
 import io.github.poa1024.ai.code.buddy.conf.Configuration;
 import io.github.poa1024.ai.code.buddy.intellij.BackgroundableExecutor;
-import io.github.poa1024.ai.code.buddy.session.GenerationCodeSession;
+import io.github.poa1024.ai.code.buddy.session.GenerateCodeSession;
 import io.github.poa1024.ai.code.buddy.session.SessionManager;
 import io.github.poa1024.ai.code.buddy.util.NotificationUtils;
 import io.github.poa1024.ai.code.buddy.util.PsiUtils;
@@ -48,7 +48,7 @@ public class GenerateCodeAction extends AnAction {
             var after = psiFile.getText().substring(endOffset);
             var context = before + after;
 
-            var session = new GenerationCodeSession(
+            var session = new GenerateCodeSession(
                     (code) -> {
                         var document = documentManager.getDocument(psiFile);
                         var styleManager = CodeStyleManager.getInstance(project);

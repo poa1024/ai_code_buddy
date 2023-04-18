@@ -1,5 +1,6 @@
 package io.github.poa1024.ai.code.buddy.conf;
 
+import freemarker.template.Version;
 import io.github.poa1024.ai.code.buddy.AIClient;
 import io.github.poa1024.ai.code.buddy.AIRequestBuilder;
 import io.github.poa1024.ai.code.buddy.gpt.Gpt35TurboClient;
@@ -14,6 +15,8 @@ public interface Configuration {
 
     SessionManager getSessionManager();
 
+    freemarker.template.Configuration getFreemarkerConf();
+
     GptConfiguration GPT_CONFIGURATION = new GptConfiguration();
 
     //can be switched to different implementation
@@ -27,6 +30,12 @@ public interface Configuration {
         private final Gpt35TurboClient aiClient = new Gpt35TurboClient();
         private final AIRequestBuilder aiRequestBuilder = new AIRequestBuilder();
         private final SessionManager sessionManager = new SessionManager("GPT");
+        private final freemarker.template.Configuration freemarkerConf = new freemarker.template.Configuration(new Version("2.3.31"));
+
+        {
+            freemarkerConf.setClassForTemplateLoading(this.getClass(), "/templates");
+        }
+
     }
 
 
