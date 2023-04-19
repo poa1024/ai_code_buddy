@@ -37,7 +37,7 @@ public class GenerateCodeSession extends Session {
         this.generatedCodeHandler = generatedCodeHandler;
         this.reqTemplate = Configuration.getInstance()
                 .getFreemarkerConf()
-                .getTemplate("code_generation_req.ftl");
+                .getTemplate("ai/code_generation_req.ftl");
     }
 
     @Override
