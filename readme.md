@@ -18,7 +18,6 @@
 
 - dialog to accept or to regenerate the result
 - if we can't parse result from gpt, just show the raw response in the chat
-- template engine to build gpt requests
 - ability to highlight the code and refactor it (new scenario)
 - new scenario - just start the conversation with gpt in the window
 - configuration for apikey

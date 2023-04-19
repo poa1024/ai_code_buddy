@@ -41,94 +41,92 @@ class GenerateCodeSessionTest {
       }
       """
 
-    //language=textmate
-    private val firstRequestTemplate =
-        """
-Generate code based on the provided request.
-Request: [ %s ]
-
-Your response should contain the code only.
-Don't leave any comments or notes.
-Don't surround your response with quotes.
-
-Consider that the code is a part of this context:
-```
-
-      public class Person {
-          private String name;
-          private int age;
-          private String occupation;
-  
-          public Person(String name, int age, String occupation) {
-              this.name = name;
-              this.age = age;
-              this.occupation = occupation;
-          }
-  
-          public String getName() {
-              return name;
-          }
+    //language=text
+    private val firstRequestTemplate = """
+        Generate code based on the provided request.
+        Request: [ %s ]
+        
+        Your response should contain the code only.
+        Don't leave any comments or notes.
+        Don't surround your response with quotes.
+        
+        Consider that the code is a part of this context:
+        ```
+        
+              public class Person {
+                  private String name;
+                  private int age;
+                  private String occupation;
           
-          /*your code will be here*/
+                  public Person(String name, int age, String occupation) {
+                      this.name = name;
+                      this.age = age;
+                      this.occupation = occupation;
+                  }
           
-          public int getAge() {
-              return age;
-          }
+                  public String getName() {
+                      return name;
+                  }
+                  
+                  /*your code will be here*/
+                  
+                  public int getAge() {
+                      return age;
+                  }
+        
+                  public String getOccupation() {
+                      return occupation;
+                  }
+              }
+              
+        ```
+    """
 
-          public String getOccupation() {
-              return occupation;
-          }
-      }
-      
-```
-""".trimIndent()
-
-    //language=textmate
-    private val secondRequestTemplate =
-        """
-Adjust the provided code. Return only the adjusted version.
-%s
-
-Code to adjust:
-```
- %s 
-```
-
-Your response should contain the code only.
-Don't leave any comments or notes.
-Don't surround your response with quotes.
-
-Consider that the code is a part of this context:
-```
-
-      public class Person {
-          private String name;
-          private int age;
-          private String occupation;
-  
-          public Person(String name, int age, String occupation) {
-              this.name = name;
-              this.age = age;
-              this.occupation = occupation;
-          }
-  
-          public String getName() {
-              return name;
-          }
+    //language=text
+    private val secondRequestTemplate = """
+        Adjust the provided code. Return only the adjusted version.
+        %s
+        
+        Code to adjust:
+        ```
+         %s 
+        ```
+        
+        Your response should contain the code only.
+        Don't leave any comments or notes.
+        Don't surround your response with quotes.
+        
+        Consider that the code is a part of this context:
+        ```
+        
+              public class Person {
+                  private String name;
+                  private int age;
+                  private String occupation;
           
-          /*your code will be here*/
+                  public Person(String name, int age, String occupation) {
+                      this.name = name;
+                      this.age = age;
+                      this.occupation = occupation;
+                  }
           
-          public int getAge() {
-              return age;
-          }
-
-          public String getOccupation() {
-              return occupation;
-          }
-      }
-      
-```
-""".trimIndent()
+                  public String getName() {
+                      return name;
+                  }
+                  
+                  /*your code will be here*/
+                  
+                  public int getAge() {
+                      return age;
+                  }
+        
+                  public String getOccupation() {
+                      return occupation;
+                  }
+              }
+              
+        ```
+    """
 
     @DataProvider(name = "codeGenerationScenarios")
     fun codeGenerationScenarios(): Array<Array<Any>> {
@@ -217,15 +215,30 @@ Consider that the code is a part of this context:
             411
         )
 
-        steps.forEach {
+        steps.forEach { step ->
 
-            every { aiClient.ask(it.aiRequest) } returns it.codeGenerateByAi
-            every { codeHandler.accept(it.expectedCode) } returns Unit
+            every { aiClient.ask(match { it.moreOrLessSimilarTo(step.aiRequest) }) } returns step.codeGenerateByAi
+            every { codeHandler.accept(step.expectedCode) } returns Unit
 
-            session.proceed(it.userInput) {}
-            verify { codeHandler.accept(it.expectedCode) }
+            session.proceed(step.userInput) {}
+            verify { codeHandler.accept(step.expectedCode) }
         }
-
-
     }
+}
+
+fun String.moreOrLessSimilarTo(s: String) = this.trimmed() == s.trimmed()
+
+private fun String.trimmed(): String {
+
+    val lines = trimIndent().lines()
+    val minMargin = lines
+        .filter { it.isNotBlank() }
+        .minOfOrNull { it.indexOfFirst { !it.isWhitespace() } } ?: 0
+
+    return lines
+        .dropWhile(String::isBlank)
+        .dropLastWhile(String::isBlank)
+        .map { it.drop(minMargin) }
+        .map { it.trimEnd() }
+        .joinToString("\n")
 }
