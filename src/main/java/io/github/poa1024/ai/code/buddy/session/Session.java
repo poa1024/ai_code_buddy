@@ -2,28 +2,29 @@ package io.github.poa1024.ai.code.buddy.session;
 
 import io.github.poa1024.ai.code.buddy.AIClient;
 import io.github.poa1024.ai.code.buddy.Executor;
-import io.github.poa1024.ai.code.buddy.model.HtmlBlockWithMargin;
 import io.github.poa1024.ai.code.buddy.session.model.AIInteraction;
 import io.github.poa1024.ai.code.buddy.session.model.AIRequest;
 import io.github.poa1024.ai.code.buddy.session.model.AIResponse;
-import org.apache.commons.lang3.tuple.Pair;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public abstract class Session {
 
     protected final AIClient aiClient;
     protected final Executor executor;
     protected final String initialContext;
 
-    protected final List<AIInteraction> history = new ArrayList<>();
+    private final List<AIInteraction> history = new ArrayList<>();
 
     protected Session(AIClient aiClient, Executor executor, String initialContext) {
         this.aiClient = aiClient;
         this.executor = executor;
         this.initialContext = initialContext;
     }
+
 
     public void proceed(String userInput, Runnable onAnyChangesCallback) {
         var req = createRequest(userInput);
@@ -50,8 +51,5 @@ public abstract class Session {
     protected AIResponse processResponse(AIResponse response) {
         return response;
     }
-
-    protected abstract List<Pair<HtmlBlockWithMargin, HtmlBlockWithMargin>> getPrintableHtmlHistory();
-
 
 }

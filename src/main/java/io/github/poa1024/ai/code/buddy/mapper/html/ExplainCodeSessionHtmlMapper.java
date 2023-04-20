@@ -1,0 +1,49 @@
+package io.github.poa1024.ai.code.buddy.mapper.html;
+
+import io.github.poa1024.ai.code.buddy.model.html.HtmlAnswerBlock;
+import io.github.poa1024.ai.code.buddy.model.html.HtmlBlock;
+import io.github.poa1024.ai.code.buddy.model.html.HtmlQuestionBlock;
+import io.github.poa1024.ai.code.buddy.session.ExplainCodeSession;
+import io.github.poa1024.ai.code.buddy.session.model.AIInteraction;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ExplainCodeSessionHtmlMapper implements SessionHistoryHtmlMapper<ExplainCodeSession> {
+
+    @Override
+    public List<HtmlBlock> map(ExplainCodeSession session) {
+        var res = new ArrayList<HtmlBlock>();
+
+        boolean first = true;
+
+        for (AIInteraction qa : session.getHistory()) {
+
+            HtmlBlock question;
+
+            if (first) {
+                //language=html
+                question = new HtmlQuestionBlock("""
+                                <i>asked to explain the code</i> <br> <br>
+                                <blockquote>
+                                    <pre>%s</pre>
+                                </blockquote>
+                        """.formatted(session.getCode())
+                );
+                first = false;
+            } else {
+                //language=html
+                question = new HtmlQuestionBlock(qa.getRequest().getQuestion().text());
+            }
+            res.add(question);
+
+            if (qa.getResponse() != null) {
+                res.add(new HtmlAnswerBlock(
+                        SessionHistoryHtmlMapper.rawTextToHtml(qa.getResponse().getText())
+                ));
+            }
+
+        }
+        return res;
+    }
+}

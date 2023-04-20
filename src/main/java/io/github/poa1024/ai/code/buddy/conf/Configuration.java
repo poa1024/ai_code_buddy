@@ -4,10 +4,15 @@ import freemarker.template.Version;
 import io.github.poa1024.ai.code.buddy.AIClient;
 import io.github.poa1024.ai.code.buddy.AIRequestBuilder;
 import io.github.poa1024.ai.code.buddy.gpt.Gpt35TurboClient;
+import io.github.poa1024.ai.code.buddy.mapper.html.ExplainCodeSessionHtmlMapper;
+import io.github.poa1024.ai.code.buddy.mapper.html.GenerateCodeSessionHtmlMapper;
 import io.github.poa1024.ai.code.buddy.session.SessionManager;
 import lombok.Getter;
 
 public interface Configuration {
+
+    GenerateCodeSessionHtmlMapper GENERATE_CODE_SESSION_HTML_MAPPER = new GenerateCodeSessionHtmlMapper();
+    ExplainCodeSessionHtmlMapper EXPLAIN_CODE_SESSION_HTML_MAPPER = new ExplainCodeSessionHtmlMapper();
 
     AIClient getAiClient();
 

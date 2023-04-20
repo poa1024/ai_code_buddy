@@ -2,15 +2,12 @@ package io.github.poa1024.ai.code.buddy.intellij.ui;
 
 import freemarker.template.Template;
 import io.github.poa1024.ai.code.buddy.conf.Configuration;
-import io.github.poa1024.ai.code.buddy.model.HtmlBlockWithMargin;
+import io.github.poa1024.ai.code.buddy.model.html.HtmlBlock;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.swing.*;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
@@ -40,18 +37,9 @@ public class SessionWindow {
     }
 
     @SneakyThrows
-    public void printConversation(List<Pair<HtmlBlockWithMargin, HtmlBlockWithMargin>> conversation) {
+    public void printConversation(List<HtmlBlock> conversation) {
         var conversationAsString = conversation.stream()
-                .map(qa -> {
-                            var list = new ArrayList<String>();
-                            list.add("<b>Request:</b>" + qa.getLeft().getValue());
-                            if (qa.getRight() != null) {
-                                list.add("<b>Answer:</b>" + qa.getRight().getValue());
-                            }
-                            return list;
-                        }
-                )
-                .flatMap(Collection::stream)
+                .map(HtmlBlock::getValue)
                 .collect(Collectors.joining());
 
         var templateModel = new HashMap<String, Object>();

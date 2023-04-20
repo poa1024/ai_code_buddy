@@ -17,6 +17,8 @@
 - readme.me generation (and updating readme based on the project changes)
 - dialog to accept or to regenerate the result
 
+
+- add test that just prints html
 - if we can't parse result from gpt, just show the raw response in the chat
 -
 - ability to highlight the code and refactor it (new scenario)
