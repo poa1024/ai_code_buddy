@@ -1,10 +1,23 @@
 package io.github.poa1024.ai.code.buddy.session.model;
 
+import io.github.poa1024.ai.code.buddy.model.HtmlBlockWithMargin;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@Data
+import java.util.stream.Collectors;
+
+@Getter
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class AIResponse {
-    private String text;
+    private final String text;
+    private boolean failed = false;
+
+    public HtmlBlockWithMargin asHtmlBlock() {
+        return new HtmlBlockWithMargin(text.lines()
+                .collect(Collectors.joining("<br>"))
+                .replaceAll("```(.*?)```", "<blockquote><pre>$1</pre></blockquote>"));
+    }
+
 }

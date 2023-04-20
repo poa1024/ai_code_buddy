@@ -2,6 +2,7 @@ package io.github.poa1024.ai.code.buddy.session;
 
 import io.github.poa1024.ai.code.buddy.AIClient;
 import io.github.poa1024.ai.code.buddy.Executor;
+import io.github.poa1024.ai.code.buddy.model.HtmlBlockWithMargin;
 import io.github.poa1024.ai.code.buddy.session.model.AIInteraction;
 import io.github.poa1024.ai.code.buddy.session.model.AIRequest;
 import io.github.poa1024.ai.code.buddy.session.model.AIResponse;
@@ -33,7 +34,7 @@ public abstract class Session {
                 var firstChoice = aiClient
                         .ask(req.getBody());
                 var res = new AIResponse(firstChoice);
-                handleResponse(res);
+                res = processResponse(res);
                 getLastInteraction().setResponse(res);
                 onAnyChangesCallback.run();
             }
@@ -46,9 +47,11 @@ public abstract class Session {
 
     protected abstract AIRequest createRequest(String userInput);
 
-    protected abstract void handleResponse(AIResponse response);
+    protected AIResponse processResponse(AIResponse response) {
+        return response;
+    }
 
-    protected abstract List<Pair<String, String>> getPrintableHtmlHistory();
+    protected abstract List<Pair<HtmlBlockWithMargin, HtmlBlockWithMargin>> getPrintableHtmlHistory();
 
 
 }

@@ -4,6 +4,7 @@ import freemarker.template.Template;
 import io.github.poa1024.ai.code.buddy.AIClient;
 import io.github.poa1024.ai.code.buddy.Executor;
 import io.github.poa1024.ai.code.buddy.conf.Configuration;
+import io.github.poa1024.ai.code.buddy.model.HtmlBlockWithMargin;
 import io.github.poa1024.ai.code.buddy.model.HumanReadableText;
 import io.github.poa1024.ai.code.buddy.session.model.AIInteraction;
 import io.github.poa1024.ai.code.buddy.session.model.AIRequest;
@@ -64,22 +65,51 @@ public class GenerateCodeSession extends Session {
     }
 
     @Override
-    protected void handleResponse(AIResponse response) {
-        response.setText(TextUtils.cleanCode(response.getText()));
-        var code = response.getText();
-        generatedCodeHandler.accept(code);
+    protected AIResponse processResponse(AIResponse response) {
+        try {
+            var code = TextUtils.cleanCode(response.getText());
+            generatedCodeHandler.accept(code);
+            return new AIResponse(code);
+        } catch (IllegalArgumentException e) {
+            return new AIResponse(response.getText(), true);
+        }
     }
 
 
     @Override
-    protected List<Pair<String, String>> getPrintableHtmlHistory() {
+    protected List<Pair<HtmlBlockWithMargin, HtmlBlockWithMargin>> getPrintableHtmlHistory() {
         return history.stream()
                 .map(qa -> Pair.of(
-                                qa.getRequest().getQuestion().text(),
-                                qa.getResponse() != null ? "<i>code was generated successfully</i>" : null
+                                new HtmlBlockWithMargin(qa.getRequest().getQuestion().text()),
+                                qa.getResponse() != null ? getHtmlBlockWithMargin(qa.getResponse()) : null
                         )
                 )
                 .collect(Collectors.toList());
+    }
+
+    private static HtmlBlockWithMargin getHtmlBlockWithMargin(AIResponse res) {
+
+        if (res == null) {
+            return null;
+        }
+
+        if (res.isFailed()) {
+            //language=html
+            return new HtmlBlockWithMargin("""
+                                <i>failed parsing result. Raw response:</i> <br> <br>
+                                <pre>%s</pre>
+                    """.formatted(res.getText())
+            );
+        }
+
+        //language=html
+        return new HtmlBlockWithMargin("""
+                            <i>generated code</i> <br> <br>
+                            <blockquote>
+                                <pre>%s</pre>
+                            </blockquote>
+                """.formatted(res.getText())
+        );
     }
 
     private static String createContext(String context, int offset) {

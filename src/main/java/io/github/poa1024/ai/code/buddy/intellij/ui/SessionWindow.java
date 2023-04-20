@@ -2,7 +2,7 @@ package io.github.poa1024.ai.code.buddy.intellij.ui;
 
 import freemarker.template.Template;
 import io.github.poa1024.ai.code.buddy.conf.Configuration;
-import io.github.poa1024.ai.code.buddy.util.TextUtils;
+import io.github.poa1024.ai.code.buddy.model.HtmlBlockWithMargin;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.tuple.Pair;
@@ -31,7 +31,7 @@ public class SessionWindow {
     public SessionWindow(Consumer<String> onEnter) {
         this.historyTemplate = Configuration.getInstance()
                 .getFreemarkerConf()
-                .getTemplate("ui/history.ftl");
+                .getTemplate("ui/history.html");
         terminal.addActionListener(e -> {
             var text = terminal.getText();
             terminal.setText(null);
@@ -40,17 +40,14 @@ public class SessionWindow {
     }
 
     @SneakyThrows
-    public void printConversation(List<Pair<String, String>> conversation) {
+    public void printConversation(List<Pair<HtmlBlockWithMargin, HtmlBlockWithMargin>> conversation) {
         var conversationAsString = conversation.stream()
                 .map(qa -> {
                             var list = new ArrayList<String>();
-                            list.add("<b>Q:</b>&ensp;" + TextUtils.toHtml(qa.getLeft()));
-                            list.add("<br>");
+                            list.add("<b>Request:</b>" + qa.getLeft().getValue());
                             if (qa.getRight() != null) {
-                                list.add("<b>A:</b>&ensp;" + TextUtils.toHtml(qa.getRight()));
-                                list.add("<br>");
+                                list.add("<b>Answer:</b>" + qa.getRight().getValue());
                             }
-                            list.add("<br>");
                             return list;
                         }
                 )
