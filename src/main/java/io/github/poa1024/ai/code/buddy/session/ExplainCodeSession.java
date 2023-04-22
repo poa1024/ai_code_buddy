@@ -3,7 +3,7 @@ package io.github.poa1024.ai.code.buddy.session;
 import io.github.poa1024.ai.code.buddy.AIClient;
 import io.github.poa1024.ai.code.buddy.AIRequestBuilder;
 import io.github.poa1024.ai.code.buddy.Executor;
-import io.github.poa1024.ai.code.buddy.conf.Configuration;
+import io.github.poa1024.ai.code.buddy.conf.AICBContextHolder;
 import io.github.poa1024.ai.code.buddy.model.HumanReadableText;
 import io.github.poa1024.ai.code.buddy.session.model.AIRequest;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class ExplainCodeSession extends Session {
 
-    private final AIRequestBuilder aiRequestBuilder = Configuration.getInstance().getAiRequestBuilder();
+    private final AIRequestBuilder aiRequestBuilder = AICBContextHolder.getContext().getAiRequestBuilder();
     @Getter
     private final String code;
 

@@ -3,7 +3,7 @@ package io.github.poa1024.ai.code.buddy.session;
 import freemarker.template.Template;
 import io.github.poa1024.ai.code.buddy.AIClient;
 import io.github.poa1024.ai.code.buddy.Executor;
-import io.github.poa1024.ai.code.buddy.conf.Configuration;
+import io.github.poa1024.ai.code.buddy.conf.AICBContextHolder;
 import io.github.poa1024.ai.code.buddy.model.HumanReadableText;
 import io.github.poa1024.ai.code.buddy.session.model.AIInteraction;
 import io.github.poa1024.ai.code.buddy.session.model.AIRequest;
@@ -33,7 +33,7 @@ public class GenerateCodeSession extends Session {
     ) {
         super(aiClient, executor, createContext(context, offset));
         this.generatedCodeHandler = generatedCodeHandler;
-        this.reqTemplate = Configuration.getInstance()
+        this.reqTemplate = AICBContextHolder.getContext()
                 .getFreemarkerConf()
                 .getTemplate("ai/code_generation_req.ftl");
     }

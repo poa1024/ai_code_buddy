@@ -1,11 +1,14 @@
 package io.github.poa1024.ai.code.buddy
 
+import io.github.poa1024.ai.code.buddy.conf.AICBContextHolder
+import io.github.poa1024.ai.code.buddy.mapper.html.GenerateCodeSessionHtmlMapper
 import io.github.poa1024.ai.code.buddy.session.GenerateCodeSession
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.testng.annotations.DataProvider
 import org.testng.annotations.Test
+import java.io.File
 import java.util.function.Consumer
 
 class GenerateCodeSessionTest {
@@ -224,6 +227,39 @@ class GenerateCodeSessionTest {
             verify { codeHandler.accept(step.expectedCode) }
         }
     }
+
+    @Test
+    fun printExampleOfHtmlHistory() {
+
+        val aiClient = mockk<AIClient>()
+        val codeHandler = mockk<Consumer<String>>()
+
+        val session = GenerateCodeSession(
+            codeHandler,
+            aiClient,
+            executor,
+            personClassCode,
+            411
+        )
+        every { codeHandler.accept(any()) } returns Unit
+
+        every { aiClient.ask(any()) } returns """ public String toString() { return "initial"; } """
+        session.proceed("generate toString()") {}
+
+        every { aiClient.ask(any()) } returns """ public String toString() { return "changed"; } """
+        session.proceed("change it") {}
+
+        val mapper = GenerateCodeSessionHtmlMapper()
+        val htmlHistory = mapper.mapHistory(session)
+        val htmlHistoryPrinter = AICBContextHolder.getContext().htmlHistoryPrinter
+        val htmlHistoryAsString = htmlHistoryPrinter.printAsString(htmlHistory)
+
+        File("build/generateCodeHtmlHistoryExample.html").apply {
+            delete()
+            appendText(htmlHistoryAsString)
+        }
+    }
+
 }
 
 fun String.moreOrLessSimilarTo(s: String) = this.trimmed() == s.trimmed()

@@ -23,25 +23,6 @@ public class AIRequestBuilder {
         return "\nI have a new code related question: " + replica;
     }
 
-    public String askToGenerateCode(String request) {
-        return "\nGenerate code based on the provided request. " +
-               baseCodeGenerationRequest() +
-               "\nRequest: [ " + request + " ]";
-    }
-
-    public String askToChangeGeneratedCode(String request) {
-        return "\nAdjust the provided code. Return only the adjusted version. " +
-               "\n" + request + "." +
-               baseCodeGenerationRequest();
-    }
-
-
-    private static String baseCodeGenerationRequest() {
-        return "\nYor response should contain the code only. " +
-               "\nDon't leave any comments or notes. " +
-               "\nDon't surround your response with quotes.";
-    }
-
 
     public String tab(String historyToString, int i) {
         var tab = Stream.generate(() -> " ").limit(i).collect(Collectors.joining());
@@ -50,11 +31,6 @@ public class AIRequestBuilder {
 
     public String appendContext(String text, String context) {
         return text + "\n\nConsider that the code is a part of this context: \n\n```\n\n" + tab(context, 2) + "\n\n```\n\n";
-    }
-
-    public String appendPreviouslyGenerateCode(String text, List<String> codeGenerateHistory) {
-        var prevCode = codeGenerateHistory.get(codeGenerateHistory.size() - 1);
-        return text + "\n\nCode to adjust: \n\n```\n\n" + tab(prevCode, 2) + "\n\n```\n\n";
     }
 
     public String appendHistory(String text, List<AIInteraction> history) {

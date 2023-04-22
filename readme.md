@@ -13,14 +13,12 @@
 - I think request for the code adjustment could contain several versions of the code, not just the last one
 - make code in gpt window collapsible (and make html more...reach)
 - log http interaction
-- add tests for the explain scenario
 - readme.me generation (and updating readme based on the project changes)
 - dialog to accept or to regenerate the result
 
 
-- add test that just prints html
-- if we can't parse result from gpt, just show the raw response in the chat
--
+- add tests for the explain scenario, use templates for explain
+- test for bad code generation
 - ability to highlight the code and refactor it (new scenario)
 - new scenario - just start the conversation with gpt in the window
 -

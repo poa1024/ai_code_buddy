@@ -2,9 +2,9 @@ package io.github.poa1024.ai.code.buddy.session;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindowManager;
-import io.github.poa1024.ai.code.buddy.conf.Configuration;
+import io.github.poa1024.ai.code.buddy.conf.AICBContextHolder;
+import io.github.poa1024.ai.code.buddy.html.model.HtmlBlock;
 import io.github.poa1024.ai.code.buddy.intellij.ui.SessionWindow;
-import io.github.poa1024.ai.code.buddy.model.html.HtmlBlock;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -39,9 +39,9 @@ public class SessionManager {
         if (conversationWindow != null && session != null) {
             List<HtmlBlock> conversation;
             if (session instanceof GenerateCodeSession) {
-                conversation = Configuration.GENERATE_CODE_SESSION_HTML_MAPPER.map((GenerateCodeSession) session);
+                conversation = AICBContextHolder.getContext().getGenerateCodeSessionHtmlMapper().mapHistory((GenerateCodeSession) session);
             } else if (session instanceof ExplainCodeSession) {
-                conversation = Configuration.EXPLAIN_CODE_SESSION_HTML_MAPPER.map((ExplainCodeSession) session);
+                conversation = AICBContextHolder.getContext().getExplainCodeSessionHtmlMapper().mapHistory((ExplainCodeSession) session);
             } else {
                 throw new IllegalStateException();
             }

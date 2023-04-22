@@ -9,7 +9,7 @@ import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import io.github.poa1024.ai.code.buddy.AIClient;
-import io.github.poa1024.ai.code.buddy.conf.Configuration;
+import io.github.poa1024.ai.code.buddy.conf.AICBContextHolder;
 import io.github.poa1024.ai.code.buddy.intellij.BackgroundableExecutor;
 import io.github.poa1024.ai.code.buddy.session.GenerateCodeSession;
 import io.github.poa1024.ai.code.buddy.session.SessionManager;
@@ -20,8 +20,8 @@ import org.jetbrains.annotations.NotNull;
 public class GenerateCodeAction extends AnAction {
 
 
-    private final SessionManager sessionManager = Configuration.getInstance().getSessionManager();
-    private final AIClient aiClient = Configuration.getInstance().getAiClient();
+    private final SessionManager sessionManager = AICBContextHolder.getContext().getSessionManager();
+    private final AIClient aiClient = AICBContextHolder.getContext().getAiClient();
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {

@@ -1,4 +1,4 @@
-package io.github.poa1024.ai.code.buddy.model.html;
+package io.github.poa1024.ai.code.buddy.html.model;
 
 import org.intellij.lang.annotations.Language;
 

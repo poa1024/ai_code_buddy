@@ -1,8 +1,8 @@
 package io.github.poa1024.ai.code.buddy.mapper.html;
 
-import io.github.poa1024.ai.code.buddy.model.html.HtmlAnswerBlock;
-import io.github.poa1024.ai.code.buddy.model.html.HtmlBlock;
-import io.github.poa1024.ai.code.buddy.model.html.HtmlQuestionBlock;
+import io.github.poa1024.ai.code.buddy.html.model.HtmlAnswerBlock;
+import io.github.poa1024.ai.code.buddy.html.model.HtmlBlock;
+import io.github.poa1024.ai.code.buddy.html.model.HtmlQuestionBlock;
 import io.github.poa1024.ai.code.buddy.session.GenerateCodeSession;
 import io.github.poa1024.ai.code.buddy.session.model.AIResponse;
 
@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 public class GenerateCodeSessionHtmlMapper implements SessionHistoryHtmlMapper<GenerateCodeSession> {
 
     @Override
-    public List<HtmlBlock> map(GenerateCodeSession session) {
+    public List<HtmlBlock> mapHistory(GenerateCodeSession session) {
         return session.getHistory()
                 .stream()
                 .flatMap(qa -> Stream.of(

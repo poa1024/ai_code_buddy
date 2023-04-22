@@ -5,7 +5,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import io.github.poa1024.ai.code.buddy.AIClient;
-import io.github.poa1024.ai.code.buddy.conf.Configuration;
+import io.github.poa1024.ai.code.buddy.conf.AICBContextHolder;
 import io.github.poa1024.ai.code.buddy.intellij.BackgroundableExecutor;
 import io.github.poa1024.ai.code.buddy.session.ExplainCodeSession;
 import io.github.poa1024.ai.code.buddy.session.SessionManager;
@@ -15,8 +15,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class ExplainCodeAction extends AnAction {
 
-    private final SessionManager sessionManager = Configuration.getInstance().getSessionManager();
-    private final AIClient aiClient = Configuration.getInstance().getAiClient();
+    private final SessionManager sessionManager = AICBContextHolder.getContext().getSessionManager();
+    private final AIClient aiClient = AICBContextHolder.getContext().getAiClient();
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
