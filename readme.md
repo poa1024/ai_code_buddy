@@ -15,12 +15,12 @@
 - log http interaction
 - readme.me generation (and updating readme based on the project changes)
 - dialog to accept or to regenerate the result
-
-
-- add tests for the explain scenario, use templates for explain
-- test for bad code generation
 - ability to highlight the code and refactor it (new scenario)
 - new scenario - just start the conversation with gpt in the window
+
+
+- add tip in the gpt window
+- add tests for the explain scenario, use templates for explain
 -
 - configuration for apikey
 - publish plugin?

@@ -138,57 +138,49 @@ class GenerateCodeSessionTest {
             arrayOf(
                 listOf(
                     CodeGenerationTestStep(
-                        "//generate to String",
-                        firstRequestTemplate.format("//generate to String"),
-                        """ public String toString() { return "initial"} """,
-                        """ public String toString() { return "initial"} """
+                        userInput = "//generate to String",
+                        aiRequest = firstRequestTemplate.format("//generate to String"),
+                        codeGenerateByAi = """ public String toString() { return "initial"} """,
+                        expectedCode = """ public String toString() { return "initial"} """
                     ),
                     CodeGenerationTestStep(
-                        "Change it!",
-                        secondRequestTemplate.format(
+                        userInput = "Change it!",
+                        aiRequest = secondRequestTemplate.format(
                             "Change it!",
                             """public String toString() { return "initial"}"""
                         ),
-                        """ public String toString() { return "changed"} """,
-                        """ public String toString() { return "changed"} """
+                        codeGenerateByAi = """ public String toString() { return "changed"} """,
+                        expectedCode = """ public String toString() { return "changed"} """
                     )
                 )
             ),
             arrayOf(
                 listOf(
                     CodeGenerationTestStep(
-                        "//generate to String",
-                        firstRequestTemplate.format("//generate to String"),
-                        """``` public String toString() { return "initial"} ```""",
-                        """ public String toString() { return "initial"} """
-                    ),
-                    CodeGenerationTestStep(
-                        "Change it!",
-                        secondRequestTemplate.format(
-                            "Change it!",
-                            """public String toString() { return "initial"}"""
-                        ),
-                        """ public String toString() { return "changed"} """,
-                        """ public String toString() { return "changed"} """
+                        userInput = "//generate to String",
+                        aiRequest = firstRequestTemplate.format("//generate to String"),
+                        codeGenerateByAi = """``` public String toString() { return "initial"} ```""",
+                        expectedCode = """ public String toString() { return "initial"} """
                     )
                 )
             ),
             arrayOf(
                 listOf(
                     CodeGenerationTestStep(
-                        "//generate to String",
-                        firstRequestTemplate.format("//generate to String"),
-                        """```java public String toString() { return "initial""} ```""",
-                        """ public String toString() { return "initial""} """
-                    ),
+                        userInput = "//generate to String",
+                        aiRequest = firstRequestTemplate.format("//generate to String"),
+                        codeGenerateByAi = """```java public String toString() { return "initial""} ```""",
+                        expectedCode = """ public String toString() { return "initial""} """
+                    )
+                )
+            ),
+            arrayOf(
+                listOf(
                     CodeGenerationTestStep(
-                        "Change it!",
-                        secondRequestTemplate.format(
-                            "Change it!",
-                            """public String toString() { return "initial""}"""
-                        ),
-                        """ public String toString() { return "changed""} """,
-                        """ public String toString() { return "changed""} """
+                        userInput = "//generate to String",
+                        aiRequest = firstRequestTemplate.format("//generate to String"),
+                        codeGenerateByAi = """ ```another one code block``` ```java public String toString() { return "initial""} ```""",
+                        expectedCode = null
                     )
                 )
             )
@@ -199,7 +191,7 @@ class GenerateCodeSessionTest {
         val userInput: String,
         val aiRequest: String,
         val codeGenerateByAi: String,
-        val expectedCode: String
+        val expectedCode: String?
     )
 
     @Test(dataProvider = "codeGenerationScenarios")
@@ -221,10 +213,18 @@ class GenerateCodeSessionTest {
         steps.forEach { step ->
 
             every { aiClient.ask(match { it.moreOrLessSimilarTo(step.aiRequest) }) } returns step.codeGenerateByAi
-            every { codeHandler.accept(step.expectedCode) } returns Unit
+            if (step.expectedCode != null) {
+                every { codeHandler.accept(step.expectedCode) } returns Unit
+            }
 
             session.proceed(step.userInput) {}
-            verify { codeHandler.accept(step.expectedCode) }
+
+            if (step.expectedCode != null) {
+                verify { codeHandler.accept(step.expectedCode) }
+            } else {
+                verify(exactly = 0) { codeHandler.accept(any()) }
+            }
+
         }
     }
 
@@ -248,6 +248,14 @@ class GenerateCodeSessionTest {
 
         every { aiClient.ask(any()) } returns """ public String toString() { return "changed"; } """
         session.proceed("change it") {}
+
+        every { aiClient.ask(any()) } returns """ 
+            Changed from:
+            ```public String toString() { return "changed"; }```
+            To:
+            ```public String toString() { return "changed again"; }``` 
+            """.trimIndent()
+        session.proceed("change it again") {}
 
         val mapper = GenerateCodeSessionHtmlMapper()
         val htmlHistory = mapper.mapHistory(session)
