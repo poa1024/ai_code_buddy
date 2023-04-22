@@ -2,7 +2,7 @@ package io.github.poa1024.ai.code.buddy.mapper.html;
 
 import io.github.poa1024.ai.code.buddy.html.model.HtmlAnswerBlock;
 import io.github.poa1024.ai.code.buddy.html.model.HtmlBlock;
-import io.github.poa1024.ai.code.buddy.html.model.HtmlQuestionBlock;
+import io.github.poa1024.ai.code.buddy.html.model.HtmlBlockWithMarginAndPrefix;
 import io.github.poa1024.ai.code.buddy.session.GenerateCodeSession;
 import io.github.poa1024.ai.code.buddy.session.model.AIResponse;
 
@@ -18,14 +18,14 @@ public class GenerateCodeSessionHtmlMapper implements SessionHistoryHtmlMapper<G
         return session.getHistory()
                 .stream()
                 .flatMap(qa -> Stream.of(
-                                new HtmlQuestionBlock(qa.getRequest().getQuestion().text()),
+                                new HtmlBlockWithMarginAndPrefix("Code generation request", qa.getRequest().getUserInput()),
                                 mapResToHtml(qa.getResponse())
                         ).filter(Objects::nonNull)
                 )
                 .collect(Collectors.toList());
     }
 
-    private static HtmlAnswerBlock mapResToHtml(AIResponse res) {
+    private static HtmlBlock mapResToHtml(AIResponse res) {
 
         if (res == null) {
             return null;

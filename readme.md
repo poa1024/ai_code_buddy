@@ -17,10 +17,11 @@
 - dialog to accept or to regenerate the result
 - ability to highlight the code and refactor it (new scenario)
 - new scenario - just start the conversation with gpt in the window
+- pass file extension as part of the context
 
 
 - add tip in the gpt window
-- add tests for the explain scenario, use templates for explain
+- add tests for the explain scenario
 -
 - configuration for apikey
 - publish plugin?

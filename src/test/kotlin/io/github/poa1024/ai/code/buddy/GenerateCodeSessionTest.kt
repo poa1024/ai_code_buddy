@@ -53,7 +53,7 @@ class GenerateCodeSessionTest {
         Don't leave any comments or notes.
         Don't surround your response with quotes.
         
-        Consider that the code is a part of this context:
+        Consider that the code will be a part of this context:
         ```
         
               public class Person {
@@ -99,7 +99,7 @@ class GenerateCodeSessionTest {
         Don't leave any comments or notes.
         Don't surround your response with quotes.
         
-        Consider that the code is a part of this context:
+        Consider that the code will be a part of this context:
         ```
         
               public class Person {

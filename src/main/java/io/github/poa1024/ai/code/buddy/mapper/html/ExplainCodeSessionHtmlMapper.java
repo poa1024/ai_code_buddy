@@ -33,7 +33,7 @@ public class ExplainCodeSessionHtmlMapper implements SessionHistoryHtmlMapper<Ex
                 first = false;
             } else {
                 //language=html
-                question = new HtmlQuestionBlock(qa.getRequest().getQuestion().text());
+                question = new HtmlQuestionBlock(qa.getRequest().getUserInput());
             }
             res.add(question);
 

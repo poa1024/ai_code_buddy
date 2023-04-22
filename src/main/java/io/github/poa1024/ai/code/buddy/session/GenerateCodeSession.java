@@ -4,7 +4,6 @@ import freemarker.template.Template;
 import io.github.poa1024.ai.code.buddy.AIClient;
 import io.github.poa1024.ai.code.buddy.Executor;
 import io.github.poa1024.ai.code.buddy.conf.AICBContextHolder;
-import io.github.poa1024.ai.code.buddy.model.HumanReadableText;
 import io.github.poa1024.ai.code.buddy.session.model.AIInteraction;
 import io.github.poa1024.ai.code.buddy.session.model.AIRequest;
 import io.github.poa1024.ai.code.buddy.session.model.AIResponse;
@@ -35,7 +34,7 @@ public class GenerateCodeSession extends Session {
         this.generatedCodeHandler = generatedCodeHandler;
         this.reqTemplate = AICBContextHolder.getContext()
                 .getFreemarkerConf()
-                .getTemplate("ai/code_generation_req.ftl");
+                .getTemplate("ai/generate_code_req.ftl");
     }
 
     @Override
@@ -56,7 +55,7 @@ public class GenerateCodeSession extends Session {
         var stringWriter = new StringWriter();
         reqTemplate.process(templateModel, stringWriter);
         return AIRequest.builder()
-                .question(new HumanReadableText(userInput))
+                .userInput(userInput)
                 .body(stringWriter.toString())
                 .build();
     }

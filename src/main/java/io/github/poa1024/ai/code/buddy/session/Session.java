@@ -48,8 +48,6 @@ public abstract class Session {
 
     protected abstract AIRequest createRequest(String userInput);
 
-    protected AIResponse processResponse(AIResponse response) {
-        return response;
-    }
+    protected abstract AIResponse processResponse(AIResponse response);
 
 }

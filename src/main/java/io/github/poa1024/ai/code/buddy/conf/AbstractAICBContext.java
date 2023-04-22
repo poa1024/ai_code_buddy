@@ -3,7 +3,6 @@ package io.github.poa1024.ai.code.buddy.conf;
 import freemarker.template.Configuration;
 import freemarker.template.Version;
 import io.github.poa1024.ai.code.buddy.AIClient;
-import io.github.poa1024.ai.code.buddy.AIRequestBuilder;
 import io.github.poa1024.ai.code.buddy.html.HtmlHistoryPrinter;
 import io.github.poa1024.ai.code.buddy.mapper.html.ExplainCodeSessionHtmlMapper;
 import io.github.poa1024.ai.code.buddy.mapper.html.GenerateCodeSessionHtmlMapper;
@@ -18,7 +17,6 @@ public abstract class AbstractAICBContext {
     private final ExplainCodeSessionHtmlMapper explainCodeSessionHtmlMapper = new ExplainCodeSessionHtmlMapper();
 
 
-    private final AIRequestBuilder aiRequestBuilder = new AIRequestBuilder();
     private final Configuration freemarkerConf = new Configuration(new Version("2.3.31"));
 
     {
