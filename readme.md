@@ -20,7 +20,7 @@
 - pass file extension as part of the context
 
 
-- add tip in the gpt window
+- add icon
 - add tests for the explain scenario
 -
 - configuration for apikey

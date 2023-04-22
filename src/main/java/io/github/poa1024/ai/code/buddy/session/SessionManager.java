@@ -3,11 +3,8 @@ package io.github.poa1024.ai.code.buddy.session;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindowManager;
 import io.github.poa1024.ai.code.buddy.conf.AICBContextHolder;
-import io.github.poa1024.ai.code.buddy.html.model.HtmlBlock;
 import io.github.poa1024.ai.code.buddy.intellij.ui.SessionWindow;
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 public class SessionManager {
@@ -19,7 +16,6 @@ public class SessionManager {
 
     public void setSessionWindow(SessionWindow conversationWindow) {
         this.conversationWindow = conversationWindow;
-        updateView();
     }
 
     public void openNewSession(Project project, Session session) {
@@ -35,17 +31,24 @@ public class SessionManager {
         session.proceed(userInput, this::updateView);
     }
 
-    private void updateView() {
+    private void updateView(boolean intermediateState) {
         if (conversationWindow != null && session != null) {
-            List<HtmlBlock> conversation;
             if (session instanceof GenerateCodeSession) {
-                conversation = AICBContextHolder.getContext().getGenerateCodeSessionHtmlMapper().mapHistory((GenerateCodeSession) session);
+                var conversation = AICBContextHolder.getContext()
+                        .getGenerateCodeSessionHtmlMapper()
+                        .mapHistory((GenerateCodeSession) session);
+                var prompt = intermediateState ? "" : "ask to change the code";
+                conversationWindow.printConversation(prompt, conversation);
             } else if (session instanceof ExplainCodeSession) {
-                conversation = AICBContextHolder.getContext().getExplainCodeSessionHtmlMapper().mapHistory((ExplainCodeSession) session);
+                var conversation = AICBContextHolder.getContext()
+                        .getExplainCodeSessionHtmlMapper()
+                        .mapHistory((ExplainCodeSession) session);
+                var prompt = intermediateState ? "" : "ask а new question";
+                conversationWindow.printConversation(prompt, conversation);
             } else {
                 throw new IllegalStateException();
             }
-            conversationWindow.printConversation(conversation);
+
         }
     }
 

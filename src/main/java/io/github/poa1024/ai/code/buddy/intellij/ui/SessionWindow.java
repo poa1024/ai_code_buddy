@@ -5,6 +5,7 @@ import io.github.poa1024.ai.code.buddy.html.HtmlHistoryPrinter;
 import io.github.poa1024.ai.code.buddy.html.model.HtmlBlock;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
 import java.util.List;
@@ -32,13 +33,13 @@ public class SessionWindow {
         });
     }
 
-    public void printConversation(List<HtmlBlock> conversation) {
+    public void printConversation(String prompt, List<HtmlBlock> conversation) {
         var conversationAsHtml = htmlHistoryPrinter.printAsString(conversation);
         history.setText(conversationAsHtml);
+        PromptSupport.setPrompt(prompt, terminal);
         SwingUtilities.invokeLater(() -> {
             var vertical = scrollPanel.getVerticalScrollBar();
             vertical.setValue(vertical.getMaximum());
         });
     }
-
 }

@@ -25,11 +25,16 @@ public abstract class Session {
         this.initialContext = initialContext;
     }
 
+    @FunctionalInterface
+    public interface OnAnyChangesCallback {
+        void call(boolean intermediateState);
+    }
 
-    public void proceed(String userInput, Runnable onAnyChangesCallback) {
+
+    public void proceed(String userInput, OnAnyChangesCallback onAnyChangesCallback) {
         var req = createRequest(userInput);
         history.add(new AIInteraction(req));
-        onAnyChangesCallback.run();
+        onAnyChangesCallback.call(true);
         executor.execute("Asking...", () -> {
             synchronized (Session.class) {
                 var firstChoice = aiClient
@@ -37,7 +42,7 @@ public abstract class Session {
                 var res = new AIResponse(firstChoice);
                 res = processResponse(res);
                 getLastInteraction().setResponse(res);
-                onAnyChangesCallback.run();
+                onAnyChangesCallback.call(false);
             }
         });
     }
