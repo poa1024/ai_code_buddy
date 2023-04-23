@@ -131,55 +131,55 @@ class GenerateCodeSessionTest {
         ```
     """
 
-    @DataProvider(name = "codeGenerationScenarios")
-    fun codeGenerationScenarios(): Array<Array<Any>> {
+    @DataProvider(name = "testDataProvider")
+    fun testDataProvider(): Array<Array<Any>> {
 
         return arrayOf(
             arrayOf(
                 listOf(
-                    CodeGenerationTestStep(
+                    GenerateCodeTestStep(
                         userInput = "//generate to String",
                         aiRequest = firstRequestTemplate.format("//generate to String"),
-                        codeGenerateByAi = """ public String toString() { return "initial"} """,
+                        aiResponse = """ public String toString() { return "initial"} """,
                         expectedCode = """ public String toString() { return "initial"} """
                     ),
-                    CodeGenerationTestStep(
+                    GenerateCodeTestStep(
                         userInput = "Change it!",
                         aiRequest = secondRequestTemplate.format(
                             "Change it!",
                             """public String toString() { return "initial"}"""
                         ),
-                        codeGenerateByAi = """ public String toString() { return "changed"} """,
+                        aiResponse = """ public String toString() { return "changed"} """,
                         expectedCode = """ public String toString() { return "changed"} """
                     )
                 )
             ),
             arrayOf(
                 listOf(
-                    CodeGenerationTestStep(
+                    GenerateCodeTestStep(
                         userInput = "//generate to String",
                         aiRequest = firstRequestTemplate.format("//generate to String"),
-                        codeGenerateByAi = """``` public String toString() { return "initial"} ```""",
+                        aiResponse = """``` public String toString() { return "initial"} ```""",
                         expectedCode = """ public String toString() { return "initial"} """
                     )
                 )
             ),
             arrayOf(
                 listOf(
-                    CodeGenerationTestStep(
+                    GenerateCodeTestStep(
                         userInput = "//generate to String",
                         aiRequest = firstRequestTemplate.format("//generate to String"),
-                        codeGenerateByAi = """```java public String toString() { return "initial""} ```""",
+                        aiResponse = """```java public String toString() { return "initial""} ```""",
                         expectedCode = """ public String toString() { return "initial""} """
                     )
                 )
             ),
             arrayOf(
                 listOf(
-                    CodeGenerationTestStep(
+                    GenerateCodeTestStep(
                         userInput = "//generate to String",
                         aiRequest = firstRequestTemplate.format("//generate to String"),
-                        codeGenerateByAi = """ ```another one code block``` ```java public String toString() { return "initial""} ```""",
+                        aiResponse = """ ```another one code block``` ```java public String toString() { return "initial""} ```""",
                         expectedCode = null
                     )
                 )
@@ -187,16 +187,16 @@ class GenerateCodeSessionTest {
         )
     }
 
-    data class CodeGenerationTestStep(
+    data class GenerateCodeTestStep(
         val userInput: String,
         val aiRequest: String,
-        val codeGenerateByAi: String,
+        val aiResponse: String,
         val expectedCode: String?
     )
 
-    @Test(dataProvider = "codeGenerationScenarios")
-    fun testCodeGenerationScenario(
-        steps: List<CodeGenerationTestStep>
+    @Test(dataProvider = "testDataProvider")
+    fun testGenerateCode(
+        steps: List<GenerateCodeTestStep>
     ) {
 
         val aiClient = mockk<AIClient>()
@@ -212,7 +212,7 @@ class GenerateCodeSessionTest {
 
         steps.forEach { step ->
 
-            every { aiClient.ask(match { it.moreOrLessSimilarTo(step.aiRequest) }) } returns step.codeGenerateByAi
+            every { aiClient.ask(match { it.moreOrLessSimilarTo(step.aiRequest) }) } returns step.aiResponse
             if (step.expectedCode != null) {
                 every { codeHandler.accept(step.expectedCode) } returns Unit
             }
@@ -268,21 +268,4 @@ class GenerateCodeSessionTest {
         }
     }
 
-}
-
-fun String.moreOrLessSimilarTo(s: String) = this.trimmed() == s.trimmed()
-
-private fun String.trimmed(): String {
-
-    val lines = trimIndent().lines()
-    val minMargin = lines
-        .filter { it.isNotBlank() }
-        .minOfOrNull { it.indexOfFirst { !it.isWhitespace() } } ?: 0
-
-    return lines
-        .dropWhile(String::isBlank)
-        .dropLastWhile(String::isBlank)
-        .map { it.drop(minMargin) }
-        .map { it.trimEnd() }
-        .joinToString("\n")
 }

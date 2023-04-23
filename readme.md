@@ -21,7 +21,6 @@
 
 
 - add icon
-- add tests for the explain scenario
 -
 - configuration for apikey
 - publish plugin?
