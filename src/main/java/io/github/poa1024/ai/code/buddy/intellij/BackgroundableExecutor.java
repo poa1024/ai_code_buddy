@@ -5,6 +5,8 @@ import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import io.github.poa1024.ai.code.buddy.Executor;
+import io.github.poa1024.ai.code.buddy.exception.AICBException;
+import io.github.poa1024.ai.code.buddy.util.NotificationUtils;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,7 +21,15 @@ public class BackgroundableExecutor implements Executor {
         progressManager.run(new Task.Backgroundable(project, executionName) {
             @Override
             public void run(@NotNull ProgressIndicator indicator) {
-                command.run();
+                try {
+                    command.run();
+                } catch (Exception e) {
+                    if (e instanceof AICBException) {
+                        NotificationUtils.notifyError(project, e.getMessage());
+                    } else {
+                        throw e;
+                    }
+                }
             }
         });
     }
