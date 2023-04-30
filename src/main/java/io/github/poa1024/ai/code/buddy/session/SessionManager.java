@@ -19,8 +19,9 @@ public class SessionManager {
     }
 
     public void openNewSession(Project project, Session session) {
-        ToolWindowManager.getInstance(project).getToolWindow(toolWindowName).show();
         this.session = session;
+        updateView(false);
+        ToolWindowManager.getInstance(project).getToolWindow(toolWindowName).show();
     }
 
     public void proceed() {
@@ -33,17 +34,30 @@ public class SessionManager {
 
     private void updateView(boolean intermediateState) {
         if (conversationWindow != null && session != null) {
-            if (session instanceof GenerateCodeSession) {
+            if (session instanceof GenerateCodeSession generateCodeSession) {
                 var conversation = AICBContextHolder.getContext()
                         .getGenerateCodeSessionHtmlMapper()
-                        .mapHistory((GenerateCodeSession) session);
+                        .mapHistory(generateCodeSession);
                 var prompt = intermediateState ? "" : "ask to change the code";
                 conversationWindow.printConversation(prompt, conversation);
-            } else if (session instanceof ExplainCodeSession) {
+            } else if (session instanceof ExplainCodeSession explainCodeSession) {
                 var conversation = AICBContextHolder.getContext()
                         .getExplainCodeSessionHtmlMapper()
-                        .mapHistory((ExplainCodeSession) session);
+                        .mapHistory(explainCodeSession);
                 var prompt = intermediateState ? "" : "ask а new question";
+                conversationWindow.printConversation(prompt, conversation);
+            } else if (session instanceof ConversationSession conversationSession) {
+                var conversation = AICBContextHolder.getContext()
+                        .getConversationSessionHtmlMapper()
+                        .mapHistory(conversationSession);
+                var prompt = "";
+                if (!intermediateState) {
+                    if (!conversationSession.isStarted()) {
+                        prompt = "ask gpt";
+                    } else {
+                        prompt = "continue conversation";
+                    }
+                }
                 conversationWindow.printConversation(prompt, conversation);
             } else {
                 throw new IllegalStateException();

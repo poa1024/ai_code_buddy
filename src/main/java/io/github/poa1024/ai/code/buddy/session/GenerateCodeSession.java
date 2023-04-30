@@ -22,15 +22,18 @@ public class GenerateCodeSession extends Session {
 
     private final Consumer<String> generatedCodeHandler;
 
+    private final String codeContext;
+
     @SneakyThrows
     public GenerateCodeSession(
             Consumer<String> generatedCodeHandler,
             AIClient aiClient,
             Executor executor,
-            String context,
+            String fileText,
             int offset
     ) {
-        super(aiClient, executor, createContext(context, offset));
+        super(aiClient, executor);
+        this.codeContext = createContext(fileText, offset);
         this.generatedCodeHandler = generatedCodeHandler;
         this.reqTemplate = AICBContextHolder.getContext()
                 .getFreemarkerConf()
@@ -43,7 +46,7 @@ public class GenerateCodeSession extends Session {
         var templateModel = new HashMap<>();
 
         templateModel.put("userInput", userInput);
-        templateModel.put("context", initialContext);
+        templateModel.put("context", codeContext);
 
         val codeVersions = getHistory().stream()
                 .map(AIInteraction::requireResponse)

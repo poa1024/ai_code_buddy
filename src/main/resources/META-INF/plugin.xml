@@ -17,28 +17,36 @@
 
     <actions>
 
-        <group id="poa1024.chatGpt"
+        <group id="poa1024.aicb.gpt.EditorPopupMenu"
                text="GPT"
                popup="true"
+               searchable="false"
                icon="AICBIcons.icon12"
                description="Ask GPT">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <action
-                    id="poa1024.gpt.explain"
+                    id="poa1024.aicb.gpt.explain"
                     class="io.github.poa1024.ai.code.buddy.intellij.action.ExplainCodeAction"
                     text="Explain the Code"
                     description="Explain the code">
             </action>
         </group>
 
-
         <action
-                id="poa1024.gpt.generateCode"
+                id="poa1024.aicb.gpt.generateCode"
                 class="io.github.poa1024.ai.code.buddy.intellij.action.GenerateCodeAction"
                 icon="AICBIcons.icon16"
                 text="GPT. Generate Code Based on the Description"
                 description="GPT. Generate code based on the description">
             <add-to-group group-id="GenerateGroup" anchor="last"/>
+        </action>
+
+
+        <action
+                id="poa1024.aicb.gpt.ask"
+                class="io.github.poa1024.ai.code.buddy.intellij.action.ConversationAction"
+                text="Ask GPT"
+                description="Ask GPT">
         </action>
 
     </actions>

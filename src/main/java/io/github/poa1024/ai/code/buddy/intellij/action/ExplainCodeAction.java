@@ -34,10 +34,10 @@ public class ExplainCodeAction extends AnAction {
         }
 
         var code = selectedText.getText();
-        var context = psiFile.getText();
-        var executor = new BackgroundableExecutor(editor.getProject());
+        var fileText = psiFile.getText();
+        var executor = new BackgroundableExecutor(project);
 
-        sessionManager.openNewSession(project, new ExplainCodeSession(aiClient, executor, context, code));
+        sessionManager.openNewSession(project, new ExplainCodeSession(aiClient, executor, fileText, code));
         sessionManager.proceed();
 
         caretModel.getCurrentCaret().removeSelection();

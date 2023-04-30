@@ -5,6 +5,7 @@ import io.github.poa1024.ai.code.buddy.html.model.HtmlBlock;
 import io.github.poa1024.ai.code.buddy.html.model.HtmlQuestionBlock;
 import io.github.poa1024.ai.code.buddy.session.ExplainCodeSession;
 import io.github.poa1024.ai.code.buddy.session.model.AIInteraction;
+import io.github.poa1024.ai.code.buddy.util.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class ExplainCodeSessionHtmlMapper implements SessionHistoryHtmlMapper<Ex
 
             if (qa.getResponse() != null) {
                 res.add(new HtmlAnswerBlock(
-                        SessionHistoryHtmlMapper.rawTextToHtml(qa.getResponse().getText())
+                        TextUtils.rawTextToHtml(qa.getResponse().getText())
                 ));
             }
 

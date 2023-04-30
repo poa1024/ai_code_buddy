@@ -6,46 +6,35 @@ import io.github.poa1024.ai.code.buddy.Executor;
 import io.github.poa1024.ai.code.buddy.context.AICBContextHolder;
 import io.github.poa1024.ai.code.buddy.session.model.AIRequest;
 import io.github.poa1024.ai.code.buddy.session.model.AIResponse;
-import lombok.Getter;
 import lombok.SneakyThrows;
 
 import java.io.StringWriter;
 import java.util.HashMap;
-import java.util.regex.Pattern;
 
 import static io.github.poa1024.ai.code.buddy.util.TextUtils.prepareConversationHistory;
 import static io.github.poa1024.ai.code.buddy.util.TextUtils.removeAnswerPrefixFromResponse;
 
-public class ExplainCodeSession extends Session {
+public class ConversationSession extends Session {
 
     private final Template reqTemplate;
-    @Getter
-    private final String code;
-    private final String codeContext;
 
     @SneakyThrows
-    public ExplainCodeSession(AIClient aiClient, Executor executor, String fileText, String code) {
+    public ConversationSession(AIClient aiClient, Executor executor) {
         super(aiClient, executor);
-        this.code = code;
-        this.codeContext = removeCodeFromTheContext(fileText, code);
         this.reqTemplate = AICBContextHolder.getContext()
                 .getFreemarkerConf()
-                .getTemplate("ai/explain_code_req.ftl");
+                .getTemplate("ai/conversation_req.ftl");
+    }
+
+    public boolean isStarted() {
+        return !getHistory().isEmpty();
     }
 
     @Override
     @SneakyThrows
     protected AIRequest createRequest(String userInput) {
 
-        if (getHistory().isEmpty()) {
-            userInput = "Give me a short explanation of what's happening in the code. " +
-                        "Try to be concise." +
-                        "Your answer should not contain the code itself. Just the explanation.";
-        }
-
         var templateModel = new HashMap<>();
-        templateModel.put("context", codeContext);
-        templateModel.put("code", code);
         templateModel.put("history", prepareConversationHistory(getHistory(), userInput));
 
         var stringWriter = new StringWriter();
@@ -62,9 +51,5 @@ public class ExplainCodeSession extends Session {
         return removeAnswerPrefixFromResponse(response);
     }
 
-
-    public static String removeCodeFromTheContext(String context, String code) {
-        return context.replaceAll(Pattern.quote(code), "/*discussed code is here*/");
-    }
 
 }

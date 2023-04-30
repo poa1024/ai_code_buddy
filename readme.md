@@ -15,9 +15,10 @@
 - log http interaction
 - readme.me generation (and updating readme based on the project changes)
 - dialog to accept or to regenerate the result
-- ability to highlight the code and refactor it (new scenario)
-- new scenario - just start the conversation with gpt in the window
 - pass file extension as part of the context
 
 
+- tests for conversation
+- block terminal if there is no session, make cursor active when a new session appeared
+- ability to highlight the code and refactor it (new scenario)
 - publish plugin?

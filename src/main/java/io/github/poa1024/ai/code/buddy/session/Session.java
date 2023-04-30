@@ -15,14 +15,12 @@ public abstract class Session {
 
     protected final AIClient aiClient;
     protected final Executor executor;
-    protected final String initialContext;
 
     private final List<AIInteraction> history = new ArrayList<>();
 
-    protected Session(AIClient aiClient, Executor executor, String initialContext) {
+    protected Session(AIClient aiClient, Executor executor) {
         this.aiClient = aiClient;
         this.executor = executor;
-        this.initialContext = initialContext;
     }
 
     @FunctionalInterface
