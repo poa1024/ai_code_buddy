@@ -3,7 +3,7 @@ package io.github.poa1024.ai.code.buddy.session;
 import freemarker.template.Template;
 import io.github.poa1024.ai.code.buddy.AIClient;
 import io.github.poa1024.ai.code.buddy.Executor;
-import io.github.poa1024.ai.code.buddy.conf.AICBContextHolder;
+import io.github.poa1024.ai.code.buddy.context.AICBContextHolder;
 import io.github.poa1024.ai.code.buddy.session.model.AIInteraction;
 import io.github.poa1024.ai.code.buddy.session.model.AIRequest;
 import io.github.poa1024.ai.code.buddy.session.model.AIResponse;

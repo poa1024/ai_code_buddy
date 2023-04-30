@@ -1,6 +1,6 @@
 package io.github.poa1024.ai.code.buddy
 
-import io.github.poa1024.ai.code.buddy.conf.AICBContextHolder
+import io.github.poa1024.ai.code.buddy.context.AICBContextHolder
 import io.github.poa1024.ai.code.buddy.mapper.html.GenerateCodeSessionHtmlMapper
 import io.github.poa1024.ai.code.buddy.session.GenerateCodeSession
 import io.mockk.every

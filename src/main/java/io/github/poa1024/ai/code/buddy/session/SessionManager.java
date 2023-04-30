@@ -2,7 +2,7 @@ package io.github.poa1024.ai.code.buddy.session;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindowManager;
-import io.github.poa1024.ai.code.buddy.conf.AICBContextHolder;
+import io.github.poa1024.ai.code.buddy.context.AICBContextHolder;
 import io.github.poa1024.ai.code.buddy.intellij.ui.SessionWindow;
 import lombok.RequiredArgsConstructor;
 

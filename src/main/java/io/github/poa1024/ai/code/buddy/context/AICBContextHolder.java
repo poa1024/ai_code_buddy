@@ -1,4 +1,4 @@
-package io.github.poa1024.ai.code.buddy.conf;
+package io.github.poa1024.ai.code.buddy.context;
 
 public abstract class AICBContextHolder {
 

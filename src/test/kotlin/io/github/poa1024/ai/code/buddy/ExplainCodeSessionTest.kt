@@ -1,7 +1,7 @@
 package io.github.poa1024.ai.code.buddy
 
 import com.winterbe.expekt.should
-import io.github.poa1024.ai.code.buddy.conf.AICBContextHolder
+import io.github.poa1024.ai.code.buddy.context.AICBContextHolder
 import io.github.poa1024.ai.code.buddy.mapper.html.ExplainCodeSessionHtmlMapper
 import io.github.poa1024.ai.code.buddy.session.ExplainCodeSession
 import io.mockk.every

@@ -5,7 +5,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import io.github.poa1024.ai.code.buddy.AIClient;
-import io.github.poa1024.ai.code.buddy.conf.AICBContextHolder;
+import io.github.poa1024.ai.code.buddy.context.AICBContextHolder;
 import io.github.poa1024.ai.code.buddy.intellij.BackgroundableExecutor;
 import io.github.poa1024.ai.code.buddy.session.ExplainCodeSession;
 import io.github.poa1024.ai.code.buddy.session.SessionManager;

@@ -1,6 +1,6 @@
 package io.github.poa1024.ai.code.buddy.intellij.ui;
 
-import io.github.poa1024.ai.code.buddy.conf.AICBContextHolder;
+import io.github.poa1024.ai.code.buddy.context.AICBContextHolder;
 import io.github.poa1024.ai.code.buddy.html.HtmlHistoryPrinter;
 import io.github.poa1024.ai.code.buddy.html.model.HtmlBlock;
 import lombok.Getter;

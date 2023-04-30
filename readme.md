@@ -20,7 +20,6 @@
 - pass file extension as part of the context
 
 
+- handle exceptions
 - add icon
--
-- configuration for apikey
 - publish plugin?

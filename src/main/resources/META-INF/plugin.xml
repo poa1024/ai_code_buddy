@@ -8,6 +8,11 @@
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow factoryClass="io.github.poa1024.ai.code.buddy.intellij.ui.SessionWindowFactory" id="GPT" anchor="bottom"/>
         <notificationGroup id="AICBNotificationGroup" displayType="BALLOON"/>
+        <applicationConfigurable groupId="tools"
+                                 displayName="AI Code Buddy"
+                                 id="poa1024.aicb"
+                                 instance="io.github.poa1024.ai.code.buddy.intellij.conf.AICBConfiguration"
+        />
     </extensions>
 
     <actions>
