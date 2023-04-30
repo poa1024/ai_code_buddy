@@ -45,8 +45,14 @@ intellij {
     type.set("IC")
 }
 patchPluginXml {
+    pluginDescription = """
+        Icon by <a href="https://freeicons.io/profile/433683">manshagraphics</a> on <a href="https://freeicons.io">freeicons.io</a>
+        <br>
+    """
     changeNotes = """
-      No notes so far<br>"""
+      No notes so far
+      <br>
+    """
 }
 test {
     useTestNG()

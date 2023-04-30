@@ -20,5 +20,4 @@
 - pass file extension as part of the context
 
 
-- add icon
 - publish plugin?

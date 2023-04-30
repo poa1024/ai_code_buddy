@@ -6,7 +6,7 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="io.github.poa1024.ai.code.buddy.intellij.ui.SessionWindowFactory" id="GPT" anchor="bottom"/>
+        <toolWindow factoryClass="io.github.poa1024.ai.code.buddy.intellij.ui.SessionWindowFactory" id="GPT" anchor="bottom" icon="AICBIcons.icon13"/>
         <notificationGroup id="AICBNotificationGroup" displayType="BALLOON"/>
         <applicationConfigurable groupId="tools"
                                  displayName="AI Code Buddy"
@@ -20,6 +20,7 @@
         <group id="poa1024.chatGpt"
                text="GPT"
                popup="true"
+               icon="AICBIcons.icon12"
                description="Ask GPT">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <action
@@ -34,6 +35,7 @@
         <action
                 id="poa1024.gpt.generateCode"
                 class="io.github.poa1024.ai.code.buddy.intellij.action.GenerateCodeAction"
+                icon="AICBIcons.icon16"
                 text="GPT. Generate Code Based on the Description"
                 description="GPT. Generate code based on the description">
             <add-to-group group-id="GenerateGroup" anchor="last"/>
