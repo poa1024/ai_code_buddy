@@ -62,9 +62,6 @@ public class SessionManager {
             conversationWindow.setEnabled(!intermediateState);
 
         }
-
-
     }
-
 
 }
