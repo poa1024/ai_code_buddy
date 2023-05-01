@@ -59,6 +59,10 @@ public class SessionManager {
                 throw new IllegalStateException();
             }
 
+            if (!intermediateState && session instanceof Focusable) {
+                conversationWindow.grabFocus();
+            }
+
             conversationWindow.setEnabled(!intermediateState);
 
         }

@@ -26,11 +26,12 @@ public class SessionWindow {
     public SessionWindow(Consumer<String> onEnter) {
         this.htmlHistoryPrinter = AICBContextHolder.getContext()
                 .getHtmlHistoryPrinter();
-        terminal.addActionListener(e -> {
+        this.terminal.addActionListener(e -> {
             var text = terminal.getText();
             terminal.setText(null);
             onEnter.accept(text);
         });
+        setEnabled(false);
     }
 
     public void printConversation(String prompt, List<HtmlBlock> conversation) {

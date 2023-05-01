@@ -27,8 +27,8 @@
             <action
                     id="poa1024.aicb.gpt.explain"
                     class="io.github.poa1024.ai.code.buddy.intellij.action.ExplainCodeAction"
-                    text="Explain the Code"
-                    description="Explain the code">
+                    text="Explain"
+                    description="Explain">
             </action>
         </group>
 
