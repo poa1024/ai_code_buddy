@@ -59,4 +59,9 @@ public class TextUtils {
         return response;
     }
 
+
+    public static String removeCodeFromTheContext(String context, String code) {
+        return context.replaceAll(Pattern.quote(code), "/*discussed code is here*/");
+    }
+
 }

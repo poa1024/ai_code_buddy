@@ -8,6 +8,7 @@ import io.github.poa1024.ai.code.buddy.intellij.conf.AICBSettings;
 import io.github.poa1024.ai.code.buddy.mapper.html.ConversationSessionHtmlMapper;
 import io.github.poa1024.ai.code.buddy.mapper.html.ExplainCodeSessionHtmlMapper;
 import io.github.poa1024.ai.code.buddy.mapper.html.GenerateCodeSessionHtmlMapper;
+import io.github.poa1024.ai.code.buddy.mapper.html.RefactorCodeSessionHtmlMapper;
 import io.github.poa1024.ai.code.buddy.session.SessionManager;
 import lombok.Getter;
 
@@ -16,6 +17,8 @@ public abstract class AbstractAICBContext {
     //mappers
     @Getter
     private final GenerateCodeSessionHtmlMapper generateCodeSessionHtmlMapper = new GenerateCodeSessionHtmlMapper();
+    @Getter
+    private final RefactorCodeSessionHtmlMapper refactorCodeSessionHtmlMapper = new RefactorCodeSessionHtmlMapper();
     @Getter
     private final ExplainCodeSessionHtmlMapper explainCodeSessionHtmlMapper = new ExplainCodeSessionHtmlMapper();
     @Getter

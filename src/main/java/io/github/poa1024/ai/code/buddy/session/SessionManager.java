@@ -43,6 +43,12 @@ public class SessionManager {
                         .mapHistory(generateCodeSession);
                 var prompt = intermediateState ? "" : "ask to change the code";
                 conversationWindow.printConversation(prompt, conversation);
+            } else if (session instanceof RefactorCodeSession refactorCodeSession) {
+                var conversation = AICBContextHolder.getContext()
+                        .getRefactorCodeSessionHtmlMapper()
+                        .mapHistory(refactorCodeSession);
+                var prompt = intermediateState ? "" : "ask to change the code";
+                conversationWindow.printConversation(prompt, conversation);
             } else if (session instanceof ExplainCodeSession explainCodeSession) {
                 var conversation = AICBContextHolder.getContext()
                         .getExplainCodeSessionHtmlMapper()

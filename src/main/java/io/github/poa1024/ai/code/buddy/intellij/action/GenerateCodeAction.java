@@ -4,13 +4,11 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.LangDataKeys;
-import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.psi.PsiComment;
-import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.codeStyle.CodeStyleManager;
 import io.github.poa1024.ai.code.buddy.AIClient;
 import io.github.poa1024.ai.code.buddy.context.AICBContextHolder;
 import io.github.poa1024.ai.code.buddy.intellij.BackgroundableExecutor;
+import io.github.poa1024.ai.code.buddy.intellij.CodeToDocumentInserter;
 import io.github.poa1024.ai.code.buddy.session.GenerateCodeSession;
 import io.github.poa1024.ai.code.buddy.session.SessionManager;
 import io.github.poa1024.ai.code.buddy.util.NotificationUtils;
@@ -30,7 +28,6 @@ public class GenerateCodeAction extends AnAction {
         var psiFile = e.getData(LangDataKeys.PSI_FILE);
         var project = psiFile.getProject();
         var caretModel = editor.getCaretModel();
-        var documentManager = PsiDocumentManager.getInstance(project);
 
         var selectedText = PsiUtils.getSelectedTextOrTheExpectedPsiElement(
                 psiFile,
@@ -49,18 +46,7 @@ public class GenerateCodeAction extends AnAction {
             var context = before + after;
 
             var session = new GenerateCodeSession(
-                    (code) -> {
-                        var document = documentManager.getDocument(psiFile);
-                        var styleManager = CodeStyleManager.getInstance(project);
-                        WriteCommandAction.runWriteCommandAction(
-                                project,
-                                () -> {
-                                    document.setText(before + code + after);
-                                    documentManager.commitDocument(document);
-                                    styleManager.reformatText(psiFile, startOffset, startOffset + code.length() + 1);
-                                }
-                        );
-                    },
+                    new CodeToDocumentInserter(psiFile, before, after),
                     aiClient,
                     new BackgroundableExecutor(editor.getProject()),
                     context,

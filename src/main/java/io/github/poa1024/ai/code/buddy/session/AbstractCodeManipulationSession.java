@@ -6,58 +6,67 @@ import io.github.poa1024.ai.code.buddy.Executor;
 import io.github.poa1024.ai.code.buddy.context.AICBContextHolder;
 import io.github.poa1024.ai.code.buddy.session.model.AIRequest;
 import io.github.poa1024.ai.code.buddy.session.model.AIResponse;
-import lombok.Getter;
+import io.github.poa1024.ai.code.buddy.util.TextUtils;
 import lombok.SneakyThrows;
 
 import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.List;
+import java.util.function.Consumer;
 
-import static io.github.poa1024.ai.code.buddy.util.TextUtils.*;
-
-public class ExplainCodeSession extends Session {
+public abstract class AbstractCodeManipulationSession extends Session {
 
     private final Template reqTemplate;
-    @Getter
-    private final String code;
+    private final Consumer<String> generatedCodeHandler;
     private final String codeContext;
 
     @SneakyThrows
-    public ExplainCodeSession(AIClient aiClient, Executor executor, String fileText, String code) {
+    public AbstractCodeManipulationSession(
+            Consumer<String> generatedCodeHandler,
+            AIClient aiClient,
+            Executor executor,
+            String codeContext,
+            String templateName
+    ) {
         super(aiClient, executor);
-        this.code = code;
-        this.codeContext = removeCodeFromTheContext(fileText, code);
+        this.codeContext = codeContext;
+        this.generatedCodeHandler = generatedCodeHandler;
         this.reqTemplate = AICBContextHolder.getContext()
                 .getFreemarkerConf()
-                .getTemplate("ai/explain_code_req.ftl");
+                .getTemplate(templateName);
     }
 
     @Override
     @SneakyThrows
     protected AIRequest createRequest(String userInput) {
-
-        if (getHistory().isEmpty()) {
-            userInput = "Give me a short explanation of what's happening in the code. " +
-                        "Try to be concise." +
-                        "Your answer should not contain the code itself. Just the explanation.";
-        }
-
         var templateModel = new HashMap<>();
+
+        templateModel.put("userInput", userInput);
         templateModel.put("context", codeContext);
-        templateModel.put("code", code);
-        templateModel.put("history", prepareConversationHistory(getHistory(), userInput));
+
+        List<String> codeVersions = getCodeVersions();
+
+        templateModel.put("codeVersions", codeVersions);
 
         var stringWriter = new StringWriter();
         reqTemplate.process(templateModel, stringWriter);
-
         return AIRequest.builder()
                 .userInput(userInput)
                 .body(stringWriter.toString())
                 .build();
     }
 
+    protected abstract List<String> getCodeVersions();
+
     @Override
     protected AIResponse processResponse(AIResponse response) {
-        return removeAnswerPrefixFromResponse(response);
+        try {
+            var code = TextUtils.cleanCode(response.getText());
+            generatedCodeHandler.accept(code);
+            return new AIResponse(code);
+        } catch (IllegalArgumentException e) {
+            return new AIResponse(response.getText(), true);
+        }
     }
 
 }

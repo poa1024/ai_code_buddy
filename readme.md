@@ -18,5 +18,6 @@
 - pass file extension as part of the context
 
 
-- ability to highlight the code and refactor it (new scenario)
+- tests for code refactoring
+- initial html for the code refactoring scenario
 - publish plugin?

@@ -30,6 +30,12 @@
                     text="Explain"
                     description="Explain">
             </action>
+            <action
+                    id="poa1024.aicb.gpt.refactor"
+                    class="io.github.poa1024.ai.code.buddy.intellij.action.RefactorCodeAction"
+                    text="Refactor"
+                    description="Refactor">
+            </action>
         </group>
 
         <action
