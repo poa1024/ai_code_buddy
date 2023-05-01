@@ -18,6 +18,5 @@
 - pass file extension as part of the context
 
 
-- tests for conversation
 - ability to highlight the code and refactor it (new scenario)
 - publish plugin?
