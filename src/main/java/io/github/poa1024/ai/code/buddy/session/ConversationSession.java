@@ -14,7 +14,7 @@ import java.util.HashMap;
 import static io.github.poa1024.ai.code.buddy.util.TextUtils.prepareConversationHistory;
 import static io.github.poa1024.ai.code.buddy.util.TextUtils.removeAnswerPrefixFromResponse;
 
-public class ConversationSession extends Session {
+public class ConversationSession extends Session implements Focusable {
 
     private final Template reqTemplate;
 
@@ -24,10 +24,6 @@ public class ConversationSession extends Session {
         this.reqTemplate = AICBContextHolder.getContext()
                 .getFreemarkerConf()
                 .getTemplate("ai/conversation_req.ftl");
-    }
-
-    public boolean isStarted() {
-        return !getHistory().isEmpty();
     }
 
     @Override

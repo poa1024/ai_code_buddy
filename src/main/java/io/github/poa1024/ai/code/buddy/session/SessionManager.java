@@ -22,6 +22,9 @@ public class SessionManager {
         this.session = session;
         updateView(false);
         ToolWindowManager.getInstance(project).getToolWindow(toolWindowName).show();
+        if (session instanceof Focusable) {
+            conversationWindow.grabFocus();
+        }
     }
 
     public void proceed() {
@@ -50,20 +53,17 @@ public class SessionManager {
                 var conversation = AICBContextHolder.getContext()
                         .getConversationSessionHtmlMapper()
                         .mapHistory(conversationSession);
-                var prompt = "";
-                if (!intermediateState) {
-                    if (!conversationSession.isStarted()) {
-                        prompt = "ask gpt";
-                    } else {
-                        prompt = "continue conversation";
-                    }
-                }
+                var prompt = intermediateState ? "" : "ask gpt";
                 conversationWindow.printConversation(prompt, conversation);
             } else {
                 throw new IllegalStateException();
             }
 
+            conversationWindow.setEnabled(!intermediateState);
+
         }
+
+
     }
 
 

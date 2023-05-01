@@ -42,4 +42,12 @@ public class SessionWindow {
             vertical.setValue(vertical.getMaximum());
         });
     }
+
+    public void grabFocus() {
+        SwingUtilities.invokeLater(() -> terminal.grabFocus());
+    }
+
+    public void setEnabled(boolean enabled) {
+        SwingUtilities.invokeLater(() -> terminal.setEnabled(enabled));
+    }
 }

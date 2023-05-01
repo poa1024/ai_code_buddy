@@ -19,6 +19,5 @@
 
 
 - tests for conversation
-- block terminal if there is no session, make cursor active when a new session appeared
 - ability to highlight the code and refactor it (new scenario)
 - publish plugin?
