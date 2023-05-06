@@ -13,6 +13,7 @@
                                  id="poa1024.aicb"
                                  instance="io.github.poa1024.ai.code.buddy.intellij.conf.AICBConfiguration"
         />
+        <applicationService serviceImplementation="io.github.poa1024.ai.code.buddy.intellij.conf.AICBSettings"/>
     </extensions>
 
     <actions>

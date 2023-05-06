@@ -1,5 +1,6 @@
 package io.github.poa1024.ai.code.buddy.context;
 
+import com.intellij.openapi.application.ApplicationManager;
 import freemarker.template.Configuration;
 import freemarker.template.Version;
 import io.github.poa1024.ai.code.buddy.AIClient;
@@ -34,13 +35,8 @@ public abstract class AbstractAICBContext {
     @Getter
     private final HtmlHistoryPrinter htmlHistoryPrinter = new HtmlHistoryPrinter(freemarkerConf);
 
-    private AICBSettings aICBSettings;
-
     public AICBSettings getAICBSettings() {
-        if (aICBSettings == null) {
-            aICBSettings = new AICBSettings();
-        }
-        return aICBSettings;
+        return ApplicationManager.getApplication().getService(AICBSettings.class);
     }
 
     public abstract AIClient getAiClient();

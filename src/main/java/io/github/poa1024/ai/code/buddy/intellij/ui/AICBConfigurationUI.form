@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="io.github.poa1024.ai.code.buddy.intellij.ui.AICBConfigurationUI">
-  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-    <margin top="0" left="0" bottom="0" right="0"/>
+  <grid id="27dc6" binding="mainPanel" layout-manager="FormLayout">
+    <rowspec value="top:d:noGrow"/>
+    <rowspec value="top:3dlu:noGrow"/>
+    <rowspec value="top:d:noGrow"/>
+    <colspec value="fill:max(d;4px):noGrow"/>
+    <colspec value="left:4dlu:noGrow"/>
+    <colspec value="fill:d:grow"/>
     <constraints>
-      <xy x="20" y="20" width="329" height="66"/>
+      <xy x="19" y="20" width="330" height="85"/>
     </constraints>
-    <properties/>
+    <properties>
+      <maximumSize width="2147483647" height="100"/>
+    </properties>
     <border type="none"/>
     <children>
       <component id="905e4" class="javax.swing.JLabel" binding="openAiApiKeyLabel">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="99" height="38"/>
+          </grid>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
         </constraints>
         <properties>
           <labelFor value="dadfd"/>
@@ -21,11 +31,39 @@
       </component>
       <component id="dadfd" class="javax.swing.JPasswordField" binding="openAiApiKeyValue">
         <constraints>
-          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="9" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="250" height="-1"/>
+          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="250" height="38"/>
           </grid>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
         </constraints>
         <properties/>
+      </component>
+      <component id="a24e2" class="javax.swing.JLabel" binding="gptModelLabel">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="-1" height="38"/>
+          </grid>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
+        </constraints>
+        <properties>
+          <labelFor value="90561"/>
+          <text value="GPT Model"/>
+        </properties>
+      </component>
+      <component id="90561" class="javax.swing.JComboBox" binding="gptModelValue">
+        <constraints>
+          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="7" anchor="9" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="38"/>
+          </grid>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
+        </constraints>
+        <properties>
+          <editable value="false"/>
+          <model>
+            <item value="gpt-3.5-turbo"/>
+            <item value="gpt-4"/>
+          </model>
+        </properties>
       </component>
     </children>
   </grid>

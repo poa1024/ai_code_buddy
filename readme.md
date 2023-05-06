@@ -16,8 +16,9 @@
 - readme.me generation (and updating readme based on the project changes)
 - dialog to accept or to regenerate the result
 - pass file extension as part of the context
+- use idea services
 
-
+- change explain scenario
 - tests for code refactoring
 - initial html for the code refactoring scenario
 - publish plugin?
