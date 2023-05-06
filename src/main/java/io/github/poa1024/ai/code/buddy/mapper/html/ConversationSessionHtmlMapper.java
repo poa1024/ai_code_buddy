@@ -10,6 +10,9 @@ import io.github.poa1024.ai.code.buddy.util.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.github.poa1024.ai.code.buddy.mapper.html.SessionHistoryHtmlMapper.getEscapedText;
+import static io.github.poa1024.ai.code.buddy.mapper.html.SessionHistoryHtmlMapper.getEscapedUserInput;
+
 public class ConversationSessionHtmlMapper implements SessionHistoryHtmlMapper<ConversationSession> {
 
     @Override
@@ -18,11 +21,11 @@ public class ConversationSessionHtmlMapper implements SessionHistoryHtmlMapper<C
 
         for (AIInteraction qa : session.getHistory()) {
 
-            res.add(new HtmlQuestionBlock(qa.getRequest().getUserInput()));
+            res.add(new HtmlQuestionBlock(getEscapedUserInput(qa.getRequest())));
 
             if (qa.getResponse() != null) {
                 res.add(new HtmlAnswerBlock(
-                        TextUtils.rawTextToHtml(qa.getResponse().getText())
+                        TextUtils.rawTextToHtml(getEscapedText(qa.getResponse()))
                 ));
             }
 

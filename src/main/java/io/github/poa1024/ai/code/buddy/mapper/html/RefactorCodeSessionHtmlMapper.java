@@ -10,6 +10,9 @@ import io.github.poa1024.ai.code.buddy.session.model.AIResponse;
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.github.poa1024.ai.code.buddy.mapper.html.SessionHistoryHtmlMapper.getEscapedText;
+import static io.github.poa1024.ai.code.buddy.mapper.html.SessionHistoryHtmlMapper.getEscapedUserInput;
+
 public class RefactorCodeSessionHtmlMapper implements SessionHistoryHtmlMapper<RefactorCodeSession> {
 
     @Override
@@ -34,7 +37,7 @@ public class RefactorCodeSessionHtmlMapper implements SessionHistoryHtmlMapper<R
                 first = false;
             } else {
                 //language=html
-                question = new HtmlBlockWithMarginAndPrefix("Request", qa.getRequest().getUserInput());
+                question = new HtmlBlockWithMarginAndPrefix("Request", getEscapedUserInput(qa.getRequest()));
             }
             res.add(question);
 
@@ -53,7 +56,7 @@ public class RefactorCodeSessionHtmlMapper implements SessionHistoryHtmlMapper<R
             return new HtmlAnswerBlock("""
                                 <i>failed parsing result. Raw response:</i> <br> <br>
                                 <pre>%s</pre>
-                    """.formatted(res.getText())
+                    """.formatted(getEscapedText(res))
             );
         }
 
@@ -63,7 +66,7 @@ public class RefactorCodeSessionHtmlMapper implements SessionHistoryHtmlMapper<R
                             <blockquote>
                                 <pre>%s</pre>
                             </blockquote>
-                """.formatted(res.getText())
+                """.formatted(getEscapedText(res))
         );
     }
 

@@ -11,6 +11,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static io.github.poa1024.ai.code.buddy.mapper.html.SessionHistoryHtmlMapper.getEscapedText;
+import static io.github.poa1024.ai.code.buddy.mapper.html.SessionHistoryHtmlMapper.getEscapedUserInput;
+
 public class GenerateCodeSessionHtmlMapper implements SessionHistoryHtmlMapper<GenerateCodeSession> {
 
     @Override
@@ -18,7 +21,7 @@ public class GenerateCodeSessionHtmlMapper implements SessionHistoryHtmlMapper<G
         return session.getHistory()
                 .stream()
                 .flatMap(qa -> Stream.of(
-                                new HtmlBlockWithMarginAndPrefix("Code generation request", qa.getRequest().getUserInput()),
+                                new HtmlBlockWithMarginAndPrefix("Code generation request", getEscapedUserInput(qa.getRequest())),
                                 mapResToHtml(qa.getResponse())
                         ).filter(Objects::nonNull)
                 )
@@ -36,7 +39,7 @@ public class GenerateCodeSessionHtmlMapper implements SessionHistoryHtmlMapper<G
             return new HtmlAnswerBlock("""
                                 <i>failed parsing result. Raw response:</i> <br> <br>
                                 <pre>%s</pre>
-                    """.formatted(res.getText())
+                    """.formatted(getEscapedText(res))
             );
         }
 
@@ -46,7 +49,7 @@ public class GenerateCodeSessionHtmlMapper implements SessionHistoryHtmlMapper<G
                             <blockquote>
                                 <pre>%s</pre>
                             </blockquote>
-                """.formatted(res.getText())
+                """.formatted(getEscapedText(res))
         );
     }
 

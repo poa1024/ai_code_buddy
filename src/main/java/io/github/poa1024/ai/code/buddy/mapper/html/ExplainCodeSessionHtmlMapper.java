@@ -10,6 +10,9 @@ import io.github.poa1024.ai.code.buddy.util.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.github.poa1024.ai.code.buddy.mapper.html.SessionHistoryHtmlMapper.getEscapedText;
+import static io.github.poa1024.ai.code.buddy.mapper.html.SessionHistoryHtmlMapper.getEscapedUserInput;
+
 public class ExplainCodeSessionHtmlMapper implements SessionHistoryHtmlMapper<ExplainCodeSession> {
 
     @Override
@@ -34,13 +37,13 @@ public class ExplainCodeSessionHtmlMapper implements SessionHistoryHtmlMapper<Ex
                 first = false;
             } else {
                 //language=html
-                question = new HtmlQuestionBlock(qa.getRequest().getUserInput());
+                question = new HtmlQuestionBlock(getEscapedUserInput(qa.getRequest()));
             }
             res.add(question);
 
             if (qa.getResponse() != null) {
                 res.add(new HtmlAnswerBlock(
-                        TextUtils.rawTextToHtml(qa.getResponse().getText())
+                        TextUtils.rawTextToHtml(getEscapedText(qa.getResponse()))
                 ));
             }
 
