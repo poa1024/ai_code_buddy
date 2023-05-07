@@ -59,7 +59,7 @@ public class SessionManager {
                 var conversation = AICBContextHolder.getContext()
                         .getConversationSessionHtmlMapper()
                         .mapHistory(conversationSession);
-                var prompt = intermediateState ? "" : "ask gpt";
+                var prompt = intermediateState ? "" : "ask something...";
                 conversationWindow.printConversation(prompt, conversation);
             } else {
                 throw new IllegalStateException();

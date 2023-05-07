@@ -19,6 +19,10 @@ public class ConversationSessionHtmlMapper implements SessionHistoryHtmlMapper<C
     public List<HtmlBlock> mapHistory(ConversationSession session) {
         var res = new ArrayList<HtmlBlock>();
 
+        if (session.getHistory().isEmpty()) {
+            return List.of(new HtmlBlock("<h3><i>&nbsp;Ask something...</i></h3>"));
+        }
+
         for (AIInteraction qa : session.getHistory()) {
 
             res.add(new HtmlQuestionBlock(getEscapedUserInput(qa.getRequest())));
