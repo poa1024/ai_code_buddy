@@ -45,7 +45,10 @@ public class SessionWindow {
     }
 
     public void grabFocus() {
-        SwingUtilities.invokeLater(() -> terminal.grabFocus());
+        SwingUtilities.invokeLater(() -> {
+            terminal.setEnabled(true);
+            terminal.grabFocus();
+        });
     }
 
     public void setEnabled(boolean enabled) {
