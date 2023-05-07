@@ -50,6 +50,8 @@ public class AbstractGptClient implements AIClient {
             if (json.error != null) {
                 if ("invalid_api_key".equals(json.error.code)) {
                     throw new AICBException("Invalid OpenAI API key");
+                } else if (json.error.message != null) {
+                    throw new AICBException("GPT: " + json.error.message);
                 }
             }
             throw new IllegalStateException(response.body());
@@ -97,6 +99,7 @@ public class AbstractGptClient implements AIClient {
     @RequiredArgsConstructor
     private class Error {
         private final String code;
+        private final String message;
     }
 
 }
