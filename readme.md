@@ -20,5 +20,4 @@
 
 - change explain scenario
 - tests for code refactoring
-- initial html for the code refactoring scenario
 - publish plugin?

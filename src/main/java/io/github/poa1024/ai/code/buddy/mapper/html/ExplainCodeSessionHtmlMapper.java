@@ -6,6 +6,7 @@ import io.github.poa1024.ai.code.buddy.html.model.HtmlQuestionBlock;
 import io.github.poa1024.ai.code.buddy.session.ExplainCodeSession;
 import io.github.poa1024.ai.code.buddy.session.model.AIInteraction;
 import io.github.poa1024.ai.code.buddy.util.TextUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class ExplainCodeSessionHtmlMapper implements SessionHistoryHtmlMapper<Ex
                                 <blockquote>
                                     <pre>%s</pre>
                                 </blockquote>
-                        """.formatted(session.getCode())
+                        """.formatted(StringEscapeUtils.escapeHtml(session.getCode()))
                 );
                 first = false;
             } else {
