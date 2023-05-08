@@ -53,7 +53,7 @@ public class SessionManager {
                 var conversation = AICBContextHolder.getContext()
                         .getExplainCodeSessionHtmlMapper()
                         .mapHistory(explainCodeSession);
-                var prompt = intermediateState ? "" : "ask а new question";
+                var prompt = intermediateState ? "" : "ask something...";
                 conversationWindow.printConversation(prompt, conversation);
             } else if (session instanceof ConversationSession conversationSession) {
                 var conversation = AICBContextHolder.getContext()

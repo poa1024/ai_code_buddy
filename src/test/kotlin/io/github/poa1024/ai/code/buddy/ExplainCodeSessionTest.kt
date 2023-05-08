@@ -96,7 +96,7 @@ class ExplainCodeSessionTest {
               
         ```
         
-          Q: Give me a short explanation of what's happening in the code. Try to be concise.Your answer should not contain the code itself. Just the explanation.
+          Q: What is it?
           A: 
     """
 
@@ -141,7 +141,7 @@ class ExplainCodeSessionTest {
               
         ```
         
-          Q: Give me a short explanation of what's happening in the code. Try to be concise.Your answer should not contain the code itself. Just the explanation.
+          Q: What is it?
           A: This is toString method.
         
           Q: Explain in more details
@@ -154,7 +154,7 @@ class ExplainCodeSessionTest {
             arrayOf(
                 listOf(
                     ExplainCodeTestStep(
-                        userInput = null,
+                        userInput = "What is it?",
                         aiRequest = firstRequest,
                         aiResponse = """This is toString method.""",
                     ),
@@ -216,7 +216,7 @@ class ExplainCodeSessionTest {
         every { codeHandler.accept(any()) } returns Unit
 
         every { aiClient.ask(any()) } returns "This is a toString method"
-        session.proceed(null) {}
+        session.proceed("What is it?") {}
 
         every { aiClient.ask(any()) } returns """This is a toString method in the class Person"""
         session.proceed("Please explain in more details") {}

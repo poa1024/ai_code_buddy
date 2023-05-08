@@ -23,13 +23,13 @@
                popup="true"
                searchable="false"
                icon="AICBIcons.icon12"
-               description="Ask GPT">
+               description="GPT">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <action
                     id="poa1024.aicb.gpt.explain"
                     class="io.github.poa1024.ai.code.buddy.intellij.action.ExplainCodeAction"
-                    text="Explain"
-                    description="Explain">
+                    text="Ask"
+                    description="Ask">
             </action>
             <action
                     id="poa1024.aicb.gpt.refactor"

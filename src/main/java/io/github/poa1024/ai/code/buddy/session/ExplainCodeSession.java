@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 import static io.github.poa1024.ai.code.buddy.util.TextUtils.*;
 
-public class ExplainCodeSession extends Session {
+public class ExplainCodeSession extends Session implements Focusable {
 
     private final Template reqTemplate;
     @Getter
@@ -34,13 +34,6 @@ public class ExplainCodeSession extends Session {
     @Override
     @SneakyThrows
     protected AIRequest createRequest(String userInput) {
-
-        if (getHistory().isEmpty()) {
-            userInput = "Give me a short explanation of what's happening in the code. " +
-                        "Try to be concise." +
-                        "Your answer should not contain the code itself. Just the explanation.";
-        }
-
         var templateModel = new HashMap<>();
         templateModel.put("context", codeContext);
         templateModel.put("code", code);

@@ -38,7 +38,6 @@ public class ExplainCodeAction extends AnAction {
         var executor = new BackgroundableExecutor(project);
 
         sessionManager.openNewSession(project, new ExplainCodeSession(aiClient, executor, fileText, code));
-        sessionManager.proceed();
 
         caretModel.getCurrentCaret().removeSelection();
 
