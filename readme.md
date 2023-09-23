@@ -18,5 +18,4 @@
 - pass file extension as part of the context
 - use idea services
 
-- tests for code refactoring
 - publish plugin?

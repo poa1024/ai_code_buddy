@@ -13,6 +13,9 @@ import io.github.poa1024.ai.code.buddy.mapper.html.RefactorCodeSessionHtmlMapper
 import io.github.poa1024.ai.code.buddy.session.SessionManager;
 import lombok.Getter;
 
+/**
+ * DI kind of
+ */
 public abstract class AbstractAICBContext {
 
     //mappers
